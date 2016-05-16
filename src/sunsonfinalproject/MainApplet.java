@@ -27,7 +27,7 @@ public class MainApplet extends PApplet{
 	}
 	
 	public void drawField(){
-		field = loadImage("res/pic/field.jpg");
+		field = loadImage("pic/field.jpg");
 		image(field, 0, 0, width, height);
 	}
 	
