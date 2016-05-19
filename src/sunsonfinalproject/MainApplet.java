@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
-import choosechar.CharacterApplet;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.data.JSONArray;
@@ -19,7 +18,7 @@ public class MainApplet extends PApplet{
 	PImage field;
 	private ArrayList<Character> characters; 
 	private int startX = 900, startY = 500;
-	private Character sherry = new Character(this, "Sherry", startX, startY);
+	private Character sherry = new Character(this, startX, startY);
 	private gameState currentGameState = gameState.CHOOSECHAR;
 	private PImage[] heros = new PImage[9];
 	private float[] selectRect = new float[2];
@@ -31,7 +30,7 @@ public class MainApplet extends PApplet{
 			characters = new ArrayList<Character>();
 			characters.add(sherry);
 		}
-		//System.out.println(width + " " + height);
+		System.out.println(width + " " + height);
 		smooth();
 	}
 	
@@ -77,7 +76,14 @@ public class MainApplet extends PApplet{
 		rect(selectRect[0],selectRect[1],140,140);
 		for(int i = 0; i < 9; i++){
 			image(heros[i],40+500*(i%3),25+ 250*(i/3));
+			
 		}
+	}
+	
+	public Character newCharacter(){
+		Character tmp = new Character(this, startX, startY);
+		characters.add(tmp);
+		return tmp;
 	}
 	
 	public void keyPressed(KeyEvent e){
