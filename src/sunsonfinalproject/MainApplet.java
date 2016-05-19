@@ -1,84 +1,124 @@
 package sunsonfinalproject;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
+import choosechar.CharacterApplet;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
 
+enum gameState{
+	START, WAITCONNECT, CHOOSECHAR, PLAY
+}
+
 @SuppressWarnings("serial")
 public class MainApplet extends PApplet{
-
-	private String file = "main/resources/data.json";
-	JSONObject data;
-	JSONArray nodes, links;
 	PImage field;
 	private ArrayList<Character> characters; 
 	private int startX = 900, startY = 500;
 	private Character sherry = new Character(this, "Sherry", startX, startY);
-	
+	private gameState currentGameState = gameState.CHOOSECHAR;
+	private PImage[] heros = new PImage[9];
+	private float[] selectRect = new float[2];
+	private int selectIndex = 0;
+
 	public void setup(){
-		size(1000, 820);
-		characters = new ArrayList<Character>();	
-		characters.add(sherry);
+		if(currentGameState == gameState.CHOOSECHAR) setupChooseChar();
+		else{
+			characters = new ArrayList<Character>();
+			characters.add(sherry);
+		}
+		//System.out.println(width + " " + height);
 		smooth();
 	}
 	
+	public void setupChooseChar(){
+		selectRect[0] = 30;
+		selectRect[1] = 15;
+		heros[0] = loadImage("pic/Amumu.png");
+		heros[1] = loadImage("pic/draven.png");
+		heros[2] = loadImage("pic/garen.png");
+		heros[3] = loadImage("pic/jinx.png");
+		heros[4] = loadImage("pic/nami.png");
+		heros[5] = loadImage("pic/shen.png");
+		heros[6] = loadImage("pic/soraka.png");
+		heros[7] = loadImage("pic/Talon.png");
+		heros[8] = loadImage("pic/vladimir.png");
+	}
+	
+	public void setupPlayChar(){
+		characters = new ArrayList<Character>();
+		characters.add(sherry);
+	}
+	
+	public void draw(){
+		background(255);
+		if(currentGameState == gameState.CHOOSECHAR) drawChooseChar();
+		else if(currentGameState == gameState.PLAY){
+			drawField();
+			for(Character character : characters){
+				character.display();
+			}
+		}
+	}
+
 	public void drawField(){
 		field = loadImage("pic/field.jpg");
 		image(field, 0, 0, width, height);
 	}
 	
-	/*
-	 * Draw the network here.
-	 */
-	public void draw(){
+	public void drawChooseChar(){
 		background(255);
-		drawField();
-		for(Character character : characters){
-			character.display();
+		fill(0, 191, 255);
+		stroke(255);
+		rect(selectRect[0],selectRect[1],140,140);
+		for(int i = 0; i < 9; i++){
+			image(heros[i],40+500*(i%3),25+ 250*(i/3));
 		}
 	}
 	
-	/*
-	 * Change the structure randomly when key pressed.
-	 */
-	public void keyPressed(){
-		for(int i=0; i<characters.size(); i++){
-			if(key == ' '){
-				characters.get(i).forward();
+	public void keyPressed(KeyEvent e){
+		if(currentGameState == gameState.CHOOSECHAR){
+			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				int temp = selectIndex - 1;
+				temp = temp >= 0 ? temp : temp + 9;
+				setSelectIndex(temp);
+			}
+			else if (e.getKeyCode() == KeyEvent.VK_UP) {
+				int temp = selectIndex - 3;
+				temp = temp >= 0 ? temp : temp + 9;
+				setSelectIndex(temp);
+			}
+			else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				int temp = selectIndex + 1;
+				temp = temp < 9 ? temp : temp - 9;
+				setSelectIndex(temp);
+			}
+			else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				int temp = selectIndex + 3;
+				temp = temp < 9 ? temp : temp - 9;
+				setSelectIndex(temp);
+			}
+			else if (e.getKeyCode() == KeyEvent.VK_ENTER){
+				setupPlayChar();
+				currentGameState = gameState.PLAY;
+			}
+		}
+		else{
+			for(int i=0; i<characters.size(); i++){
+				if(key == ' '){
+					characters.get(i).forward();
+				}
 			}
 		}
 	}
-	
-	/*
-	 * Load the data here.
-	 */
-	private void loadData(){
-		int i;
-		Random ran = new Random();
-		JSONObject tmp;
-		
-		data = loadJSONObject(file);
-		nodes = data.getJSONArray("nodes");
-		links = data.getJSONArray("links");
-		for(i=0; i<nodes.size(); i++){
-			tmp = nodes.getJSONObject(i);
-			
-			String n = tmp.getString("name");
-			float x = ran.nextFloat()*500;
-			float y = ran.nextFloat()*500;
-			
-			characters.add(new Character(this, n, x, y));
-		}
-		for(i=0; i<links.size(); i++){
-			tmp = links.getJSONObject(i);
-			int s = tmp.getInt("source");
-			int t = tmp.getInt("target");
-			
-			characters.get(s).addTarget(characters.get(t));
-		}
+	public void setSelectIndex(int selectIndex){
+		this.selectIndex = selectIndex;
+		selectRect[0] = 40 + 500 * (selectIndex % 3) - 10;
+		selectRect[1] = 25 + 250 * (selectIndex / 3) - 10;
 	}
+	
 }
