@@ -3,7 +3,7 @@ package choosechar;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class CharacterApplet extends PApplet {
+public class MainApplet extends PApplet {
 
 	private PImage[] heros = new PImage[9];
 	private float[] selectRect = new float[2];

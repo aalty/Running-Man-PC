@@ -9,13 +9,14 @@ public class Main extends JFrame{
 	
 	public static void main(String [] args){
 		
-		CharacterApplet applet = new CharacterApplet();
+		MainApplet applet = new MainApplet();
 		applet.init();
 		applet.start();
 		applet.setFocusable(true);
 		
 		JFrame window = new JFrame("Let's play a game");
-		window.setContentPane(applet);
+		//window.setContentPane(applet);
+		window.add(applet);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setSize(windowWidth, windowHeight);
 		window.setVisible(true);
