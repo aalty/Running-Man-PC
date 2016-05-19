@@ -1,13 +1,17 @@
 package choosechar;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.*;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class MainApplet extends PApplet {
+public class MainApplet extends PApplet implements KeyListener{
 
 	private PImage[] heros = new PImage[9];
 	private float[] selectRect = new float[2];
 	private int selectIndex = 0;
+	private boolean[] select = new boolean[9];
 	
 	public void setup(){
 		setSize(1200,670);
@@ -24,6 +28,9 @@ public class MainApplet extends PApplet {
 		heros[6] = loadImage("pic/soraka.png");
 		heros[7] = loadImage("pic/Talon.png");
 		heros[8] = loadImage("pic/vladimir.png");
+		for(int i = 0; i < 9; i++){
+			select[i] =true;
+		}
 	}
 	
 	public void draw(){
@@ -32,7 +39,12 @@ public class MainApplet extends PApplet {
 		rect(selectRect[0],selectRect[1],140,140);
 		for(int i = 0; i < 9; i++){
 			image(heros[i],40+500*(i%3),25+ 250*(i/3));
+			if( select[i] == false){
+				fill(0,150);
+				rect(selectRect[0],selectRect[1],140,140);
+			}
 		}
+		
 	}
 	
 	public int getSelectIndex(){
@@ -44,26 +56,36 @@ public class MainApplet extends PApplet {
 		selectRect[1] = 25 + 250 * (selectIndex / 3) - 10;
 	}
 	
-	public void keyPressed(){
+	
+	public void keyPressed(KeyEvent e){
+		
 		if (keyCode == 37) {
 			int temp = selectIndex - 1;
 			temp = temp >= 0 ? temp : temp + 9;
 			setSelectIndex(temp);
+			
 		}
 		else if (keyCode == 38) {
 			int temp = selectIndex - 3;
 			temp = temp >= 0 ? temp : temp + 9;
 			setSelectIndex(temp);
+			
 		}
 		else if (keyCode == 39) {
 			int temp = selectIndex + 1;
 			temp = temp < 9 ? temp : temp - 9;
 			setSelectIndex(temp);
+			
 		}
 		else if (keyCode == 40) {
 			int temp = selectIndex + 3;
 			temp = temp < 9 ? temp : temp - 9;
 			setSelectIndex(temp);
+			
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_ENTER){
+			select[selectIndex]= false;
 		}
 	}
+
 }
