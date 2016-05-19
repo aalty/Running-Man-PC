@@ -6,7 +6,8 @@ import java.util.*;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class MainApplet extends PApplet implements KeyListener{
+
+public class CharacterApplet extends PApplet {
 
 	private PImage[] heros = new PImage[9];
 	private float[] selectRect = new float[2];
