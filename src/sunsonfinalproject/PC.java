@@ -1,8 +1,8 @@
 package sunsonfinalproject;
 
 import javax.swing.JFrame;
-public class Main {
-	public static void main(String [] args){
+public class PC {
+	public PC(){
 		MainApplet applet = new MainApplet();
 		applet.init();
 		applet.start();
