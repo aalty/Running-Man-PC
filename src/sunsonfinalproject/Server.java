@@ -9,8 +9,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
+import javafx.embed.swing.JFXPanel;
 
 public class Server {
 
@@ -21,6 +25,20 @@ public class Server {
 	private int appletWidth = 1200, appletHeight = 820;
 	
 	public Server(int portNum) {
+		final CountDownLatch latch = new CountDownLatch(1);
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+		        new JFXPanel(); // initializes JavaFX environment
+		        latch.countDown();
+		    }
+		});
+		try {
+			latch.await();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		GUI();
 		
 		try {
@@ -47,8 +65,6 @@ public class Server {
 	
 	public void runForever() {
 		System.out.println("Server starts waiting for client.");
-		// Create a loop to make server wait for client forever (unless you stop it)
-		// Make sure you do create a connectionThread and add it into 'connections'
 		while(true){
 			try{
 				Socket ToClient = this.serverSocket.accept();
