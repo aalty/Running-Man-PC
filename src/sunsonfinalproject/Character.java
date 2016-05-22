@@ -1,6 +1,5 @@
 package sunsonfinalproject;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import processing.core.PApplet;

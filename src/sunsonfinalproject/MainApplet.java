@@ -1,10 +1,7 @@
 package sunsonfinalproject;
 
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
-import com.sun.prism.Image;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -67,6 +64,7 @@ public class MainApplet extends PApplet{
 		field = loadImage("pic/field.jpg");
 		image(field, 0, 0, width, height);
 	}
+
 	
 	public void drawChooseChar(){
 		background(255);
