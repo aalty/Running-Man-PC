@@ -12,6 +12,11 @@ public class Character {
 	private String name;
 	private PApplet parent;
 	private ArrayList<Character> targets = new ArrayList<Character>();
+	private int borderOffset = 100;
+	private int rightX = parent.width - this.borderOffset;
+	private int leftX = this.borderOffset;
+	private int upY = this.borderOffset;
+	private int downY = parent.height - this.borderOffset;
 	
 	/*
 	 * Store these variables when instance created.
@@ -25,35 +30,23 @@ public class Character {
 	public void forward(){
 		//下半部
 
-		if(this.x > 140 && this.y == 500){
+		if(this.x > this.leftX && this.y < this.downY){
 			this.x -= 20;
 			System.out.println("run1:" +this.x +", " + this.y);
 		}
 		//左彎下半
-		else if(this.x > 40 && this.y < 100){
+		else if(this.x <= this.leftX && this.y > this.upY){
 //			this.x -= 5;
 			this.y -= 5;
 			System.out.println("run2:" +this.x +", " + this.y);
 		}
-		//左彎上半
-//		else if(this.x >= 40 && this.y >= 60){
-//			this.x += 5;
-//			this.y -= 5;
-//			System.out.println("run:" +this.x +", " + this.y);
-//		}
 		//上半部
-		else if(this.x < 550 && this.y >= 60){
+		else if(this.x < this.rightX && this.y <= this.upY){
 			this.x += 20;
 			System.out.println("run:" +this.x +", " + this.y);
 		}
-		//右彎上半
-//		else if(this.x >= 60 && this.y >= 60){
-//			this.x += 5;
-//			this.y += 5;
-//			System.out.println("run:" +this.x +", " + this.y);
-//		}
 		//右彎下半
-		else if(this.x >= 60 && this.y < 400){
+		else if(this.x >= this.rightX && this.y < this.downY){
 //			this.x -= 5;
 			this.y += 5;
 			System.out.println("run:" +this.x +", " + this.y);

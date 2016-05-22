@@ -2,12 +2,9 @@ package sunsonfinalproject;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Random;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import processing.data.JSONArray;
-import processing.data.JSONObject;
 
 enum gameState{
 	START, WAITCONNECT, CHOOSECHAR, PLAY
@@ -18,7 +15,6 @@ public class MainApplet extends PApplet{
 	PImage field;
 	private ArrayList<Character> characters; 
 	private int startX = 900, startY = 500;
-	private Character sherry = new Character(this, startX, startY);
 	private gameState currentGameState = gameState.CHOOSECHAR;
 	private PImage[] heros = new PImage[9];
 	private float[] selectRect = new float[2];
@@ -28,7 +24,6 @@ public class MainApplet extends PApplet{
 		if(currentGameState == gameState.CHOOSECHAR) setupChooseChar();
 		else{
 			characters = new ArrayList<Character>();
-			characters.add(sherry);
 		}
 		System.out.println(width + " " + height);
 		smooth();
@@ -50,7 +45,6 @@ public class MainApplet extends PApplet{
 	
 	public void setupPlayChar(){
 		characters = new ArrayList<Character>();
-		characters.add(sherry);
 	}
 	
 	public void draw(){
