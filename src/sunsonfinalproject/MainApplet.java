@@ -19,6 +19,7 @@ public class MainApplet extends PApplet{
 	private PImage[] heros = new PImage[9];
 	private float[] selectRect = new float[2];
 	private int selectIndex = 0;
+	private GameMusicPlayer gameMusicPlayer = new GameMusicPlayer();
 
 	public void setup(){
 		if(currentGameState == gameState.CHOOSECHAR) setupChooseChar();
@@ -26,6 +27,7 @@ public class MainApplet extends PApplet{
 			characters = new ArrayList<Character>();
 		}
 		System.out.println(width + " " + height);
+		
 		smooth();
 	}
 	
@@ -105,6 +107,7 @@ public class MainApplet extends PApplet{
 			else if (e.getKeyCode() == KeyEvent.VK_ENTER){
 				setupPlayChar();
 				currentGameState = gameState.PLAY;
+				gameMusicPlayer.gameMusicPlay();
 			}
 		}
 		else{
