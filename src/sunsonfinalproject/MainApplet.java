@@ -1,7 +1,10 @@
 package sunsonfinalproject;
 
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import com.sun.prism.Image;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -77,7 +80,7 @@ public class MainApplet extends PApplet{
 	}
 	
 	public Character newCharacter(){
-		Character tmp = new Character(this, startX, startY);
+		Character tmp = new Character(this, startX, startY, heros[this.selectIndex]);
 		characters.add(tmp);
 		return tmp;
 	}

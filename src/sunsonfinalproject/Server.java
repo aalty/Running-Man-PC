@@ -119,6 +119,7 @@ public class Server {
 					Server.this.broadcast(line);
 				}
 				catch(IOException e){
+					
 					e.printStackTrace();
 				}
 			}

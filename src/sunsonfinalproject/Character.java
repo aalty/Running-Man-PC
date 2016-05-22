@@ -1,8 +1,10 @@
 package sunsonfinalproject;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 
 
 public class Character {
@@ -11,49 +13,54 @@ public class Character {
 	public int location=0, diff=0;
 	private String name;
 	private PApplet parent;
+	private PImage img;
 	private ArrayList<Character> targets = new ArrayList<Character>();
 	private int borderOffset = 100;
-	private int rightX = parent.width - this.borderOffset;
-	private int leftX = this.borderOffset;
-	private int upY = this.borderOffset;
-	private int downY = parent.height - this.borderOffset;
+	private int winFlag=0;
+	
 	
 	/*
 	 * Store these variables when instance created.
 	 */
-	public Character(PApplet parent, float x, float y){
+	public Character(PApplet parent, float x, float y, PImage image){
 		this.parent = parent;
 		this.x = x;
 		this.y = y;
+		this.img = image;
 	}
 	
 	public void forward(){
-		//下半部
-
-		if(this.x > this.leftX && this.y < this.downY){
-			this.x -= 20;
-			System.out.println("run1:" +this.x +", " + this.y);
-		}
-		//左彎下半
-		else if(this.x <= this.leftX && this.y > this.upY){
-//			this.x -= 5;
-			this.y -= 5;
-			System.out.println("run2:" +this.x +", " + this.y);
-		}
-		//上半部
-		else if(this.x < this.rightX && this.y <= this.upY){
-			this.x += 20;
-			System.out.println("run:" +this.x +", " + this.y);
-		}
-		//右彎下半
-		else if(this.x >= this.rightX && this.y < this.downY){
-//			this.x -= 5;
-			this.y += 5;
-			System.out.println("run:" +this.x +", " + this.y);
-		}
+		int rightX = parent.width - this.borderOffset;
+		int leftX = this.borderOffset;
+		int upY = this.borderOffset;
+		int downY = parent.height - this.borderOffset;
+		int startY = 500;
+		int startX = 900;
+		
 		//win
-		else{
-				
+		if(winFlag == 2){
+			//don`t run
+		}
+		//下
+		else if(this.x > leftX && this.y == startY){
+			//finish a round
+			if(winFlag == 1){
+				winFlag = 2;
+			}
+			this.x -= 20;
+		}
+		//左
+		else if(this.x <= leftX && this.y > upY){
+			this.y -= 15;
+		}
+		//上
+		else if(this.x < rightX && this.y <= upY){
+			this.x += 20;
+		}
+		//右
+		else if(this.x >= rightX && this.y < downY){
+			this.y += 15;
+			winFlag = 1;
 		}
 	}
 	
@@ -61,8 +68,10 @@ public class Character {
 	 * Use display() to draw the character on the sketch.
 	 */
 	public void display(){	
-		this.parent.fill(0,255,204);
-		this.parent.rect(x, y, 50, 50);
+		this.img.resize(50, 50);
+		this.parent.image(this.img, x, y);
+//		this.parent.fill(0,255,204);
+//		this.parent.rect(x, y, 50, 50);
 //		this.parent.fill(0);
 //		this.parent.text(this.name,x+10,y+25);
 		while(diff > 0){
