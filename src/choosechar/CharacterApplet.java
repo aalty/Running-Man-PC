@@ -1,12 +1,12 @@
 package choosechar;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.*;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 
 
+@SuppressWarnings("serial")
 public class CharacterApplet extends PApplet {
 
 	private PImage[] heros = new PImage[9];

@@ -16,7 +16,7 @@ public class MainApplet extends PApplet{
 	private ArrayList<Character> characters; 
 	private int startX = 900, startY = 500;
 	private gameState currentGameState = gameState.WAITCONNECT;
-	private PImage[] heros = new PImage[9];
+	private PImage[] heros = new PImage[15];
 	private float[] selectRect = new float[2];
 	private int selectIndex = 0;
 	private GameMusicPlayer gameMusicPlayer = new GameMusicPlayer();
@@ -31,7 +31,7 @@ public class MainApplet extends PApplet{
 	public void setup(){
 		waitConnectPage = new WaitConnect(this, this.IP, this.port);
 		setupChooseChar();
-		characters = new ArrayList<Character>();
+		setupPlayChar();
 		
 		smooth();
 	}
@@ -39,15 +39,10 @@ public class MainApplet extends PApplet{
 	public void setupChooseChar(){
 		selectRect[0] = 30;
 		selectRect[1] = 15;
-		heros[0] = loadImage("pic/Amumu.png");
-		heros[1] = loadImage("pic/draven.png");
-		heros[2] = loadImage("pic/garen.png");
-		heros[3] = loadImage("pic/jinx.png");
-		heros[4] = loadImage("pic/nami.png");
-		heros[5] = loadImage("pic/shen.png");
-		heros[6] = loadImage("pic/soraka.png");
-		heros[7] = loadImage("pic/Talon.png");
-		heros[8] = loadImage("pic/vladimir.png");
+		for(int i=0; i<15; i++){
+			heros[i] = loadImage("pic/characters" + i + ".png");
+			heros[i].resize(150, 150);
+		}
 	}
 	
 	public void setupPlayChar(){
@@ -77,11 +72,12 @@ public class MainApplet extends PApplet{
 
 	
 	public void drawChooseChar(){
-		background(255);
+		background(255, 255, 148);
 		fill(0, 191, 255);
-		stroke(255);
+		stroke(0, 191, 255);
 		rect(selectRect[0],selectRect[1],140,140);
 		for(int i = 0; i < 9; i++){
+			
 			image(heros[i],40+500*(i%3),25+ 250*(i/3));
 			
 		}
