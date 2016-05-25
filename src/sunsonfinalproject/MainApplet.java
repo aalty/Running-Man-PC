@@ -15,18 +15,23 @@ public class MainApplet extends PApplet{
 	PImage field;
 	private ArrayList<Character> characters; 
 	private int startX = 900, startY = 500;
-	private gameState currentGameState = gameState.CHOOSECHAR;
+	private gameState currentGameState = gameState.WAITCONNECT;
 	private PImage[] heros = new PImage[9];
 	private float[] selectRect = new float[2];
 	private int selectIndex = 0;
 	private GameMusicPlayer gameMusicPlayer = new GameMusicPlayer();
+	private WaitConnect waitConnectPage;
+	private String IP, port;
+	
+	public MainApplet(String IP, String port){
+		this.IP= IP;
+		this.port = port;
+	}
 
 	public void setup(){
-		if(currentGameState == gameState.CHOOSECHAR) setupChooseChar();
-		else{
-			characters = new ArrayList<Character>();
-		}
-		System.out.println(width + " " + height);
+		waitConnectPage = new WaitConnect(this, this.IP, this.port);
+		setupChooseChar();
+		characters = new ArrayList<Character>();
 		
 		smooth();
 	}
@@ -51,7 +56,12 @@ public class MainApplet extends PApplet{
 	
 	public void draw(){
 		background(255);
-		if(currentGameState == gameState.CHOOSECHAR) drawChooseChar();
+		if(currentGameState == gameState.WAITCONNECT){
+			waitConnectPage.display();
+		}
+		else if(currentGameState == gameState.CHOOSECHAR){
+			drawChooseChar();
+		}
 		else if(currentGameState == gameState.PLAY){
 			drawField();
 			for(Character character : characters){
@@ -84,7 +94,13 @@ public class MainApplet extends PApplet{
 	}
 	
 	public void keyPressed(KeyEvent e){
-		if(currentGameState == gameState.CHOOSECHAR){
+		if(currentGameState == gameState.WAITCONNECT){
+			if (key == ' '){
+				currentGameState = gameState.CHOOSECHAR;
+				gameMusicPlayer.gameMusicPlay();
+			}
+		}
+		else if(currentGameState == gameState.CHOOSECHAR){
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 				int temp = selectIndex - 1;
 				temp = temp >= 0 ? temp : temp + 9;
@@ -111,7 +127,7 @@ public class MainApplet extends PApplet{
 				gameMusicPlayer.gameMusicPlay();
 			}
 		}
-		else{
+		else if(currentGameState == gameState.PLAY){
 			for(int i=0; i<characters.size(); i++){
 				if(key == ' '){
 					characters.get(i).forward();

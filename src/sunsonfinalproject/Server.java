@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.BindException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -23,8 +24,9 @@ public class Server {
 	private List<ConnectionThread> connections = new ArrayList<ConnectionThread>();
 	private MainApplet applet;
 	private int appletWidth = 1200, appletHeight = 820;
+	private static int portNum;
 	
-	public Server(int portNum) {
+	public Server() {
 		final CountDownLatch latch = new CountDownLatch(1);
 		SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
@@ -43,14 +45,14 @@ public class Server {
 		
 		try {
 			this.serverSocket = new ServerSocket(portNum);
-			System.out.printf("Server starts listening on port %d.\n", portNum);
+			System.out.printf("Server IP:   %s\nServer port: %d.\n", this.getAddress(), portNum);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void GUI(){
-		applet = new MainApplet();
+		applet = new MainApplet(this.getAddress() ,Integer.toString(portNum));
 		applet.init();
 		applet.setSize(appletWidth, appletHeight);
 		applet.start();
@@ -131,9 +133,21 @@ public class Server {
 		}
 	}
 	
+	public String getAddress(){
+		InetAddress localIp;
+	    try{
+	    	localIp=InetAddress.getLocalHost();
+	    	String ip=localIp.getHostAddress();
+	    	return ip;
+	    }catch (java.net.UnknownHostException e) {
+			e.printStackTrace();
+		}
+	    return null;
+	}
+	
 	public static void main(String[] args) {
-		
-		Server server = new Server(8888);
+		portNum = 8000;
+		Server server = new Server();
 		server.runForever();
 	}
 
