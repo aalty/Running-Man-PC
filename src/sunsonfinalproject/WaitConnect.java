@@ -42,6 +42,7 @@ public class WaitConnect {
 		this.parent.fill(0);
 		this.parent.text("Waiting for players...", x-130, this.parent.height/2);
 		this.parent.text("Server IP:     "+ this.IP + "\nServer port: " + this.port, x-160, this.parent.height/2+space);
+		//print client statement
 		for(String client : clientIP){
 			this.parent.text("Get connection from client: " + client + "\n", x-160, this.parent.height/(i+2)*space);
 			i++;

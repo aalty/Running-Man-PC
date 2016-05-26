@@ -24,7 +24,8 @@ public class Server {
 	private List<ConnectionThread> connections = new ArrayList<ConnectionThread>();
 	private MainApplet applet;
 	private int appletWidth = 1200, appletHeight = 820;
-	private static int portNum;	
+	private static int portNum;
+	private int player=0, selectCnt=0;
 	
 	public Server() {
 		final CountDownLatch latch = new CountDownLatch(1);
@@ -67,17 +68,26 @@ public class Server {
 	
 	public void runForever() {
 		System.out.println("Server starts waiting for client.");
-		while(this.connections.size() < 4){
+		while(true){
 			try{
-				Socket ToClient = this.serverSocket.accept();
-				System.out.println("Get connection from client"
-									+ ToClient.getInetAddress()+":"
-									+ ToClient.getPort());
+				if(this.connections.size() < 4){
+					Socket ToClient = this.serverSocket.accept();
+					System.out.println("Get connection from client"
+										+ ToClient.getInetAddress()+":"
+										+ ToClient.getPort());
+					
+					connection = new ConnectionThread(ToClient, this.player);
+					this.player++;
+					connection.start();
+					this.connections.add(connection);
+					applet.waitConnectPage.sendClientIP(ToClient.getInetAddress().toString());
+					this.broadcast("start");
+				}
 				
-				connection = new ConnectionThread(ToClient);
-				connection.start();
-				this.connections.add(connection);
-				
+				if(this.connections.size() == 2){
+					applet.currentGameState = gameState.CHOOSECHAR;
+				}
+						
 				
 			}catch(BindException e){
 				e.printStackTrace();
@@ -99,11 +109,13 @@ public class Server {
 		private BufferedReader reader;
 		private Socket socket;
 		private Character character;
-		private int lastShake=0;
+		public ChooseCharacter rect;
+		private int lastShake=0, playerIndex;
 		private gameState currentGameState = gameState.WAITCONNECT;
 		
-		public ConnectionThread(Socket socket){
+		public ConnectionThread(Socket socket, int player){
 			this.socket = socket;
+			this.playerIndex = player;
 			try{
 				this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 				this.writer = new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream()));
@@ -116,18 +128,26 @@ public class Server {
 			while(true){
 				try{
 					String line = this.reader.readLine();
+					System.out.println("server:"+this.playerIndex+" "+ line);
 					//Wait
 					if(this.currentGameState == gameState.WAITCONNECT){
 						if(line.equals("enter")){
 							this.currentGameState = gameState.CHOOSECHAR;
+							rect = applet.newRect();
 						}
 					}
 					//Choose characters
 					else if(this.currentGameState == gameState.CHOOSECHAR){
-						applet.chooseCharacter(line);
-						if(line.equals("select")){
-							character = applet.newCharacter();
+						rect.choose(line);
+						if(rect.getSelect() == true){
+							character = applet.newCharacter(this.playerIndex);
 							this.currentGameState = gameState.PLAY;
+							selectCnt++;
+							
+							//PLAY start, the fastest client control
+							if(selectCnt == connections.size() && applet.currentGameState != gameState.PLAY){
+								applet.currentGameState = gameState.PLAY;
+							}
 						}
 					}
 					//Play
@@ -135,8 +155,6 @@ public class Server {
 						character.diff = Integer.parseInt(line) - lastShake;
 						lastShake = Integer.parseInt(line);
 					}
-					System.out.println("server:"+ line);
-//					Server.this.broadcast(line);
 				}
 				catch(IOException e){
 					e.printStackTrace();

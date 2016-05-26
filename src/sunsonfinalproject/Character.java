@@ -33,7 +33,7 @@ public class Character {
 		int upY = this.borderOffset;
 		int downY = parent.height - this.borderOffset;
 		int startY = 500;
-		int startX = 900;
+//		int startX = 900;
 		
 		//win
 		if(winFlag == 2){

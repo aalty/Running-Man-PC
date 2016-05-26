@@ -1,25 +1,22 @@
 package sunsonfinalproject;
-
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
 import processing.core.PImage;
 
 enum gameState{
-	START, WAITCONNECT, CHOOSECHAR, PLAY
+	START, WAITCONNECT, CHOOSECHAR, WAITOTHERS ,PLAY
 }
 
 @SuppressWarnings("serial")
 public class MainApplet extends PApplet{
 	PImage field;
 	private ArrayList<Character> characters; 
+	private ArrayList<ChooseCharacter> selectRects;
 	private int startX = 900, startY = 500;
-	private gameState currentGameState = gameState.WAITCONNECT;
+	public gameState currentGameState;
 	private PImage[] heros = new PImage[16];
-	private float[] selectRect = new float[2];
-	private int selectIndex = 0;
-	private GameMusicPlayer gameMusicPlayer = new GameMusicPlayer();
+	private GameMusicPlayer gameMusicPlayer;
 	public WaitConnect waitConnectPage;
 	private String IP, port;
 	
@@ -29,144 +26,76 @@ public class MainApplet extends PApplet{
 	}
 
 	public void setup(){
+		//initialize
 		waitConnectPage = new WaitConnect(this, this.IP, this.port);
-		setupChooseChar();
-		setupPlayChar();
+		gameMusicPlayer = new GameMusicPlayer();
+		currentGameState = gameState.WAITCONNECT;
+		characters = new ArrayList<Character>();
+		selectRects = new ArrayList<ChooseCharacter>();
 		
+		loadCharacters();
 		smooth();
 	}
 	
-	public void setGameState(gameState state){
-		this.currentGameState = state;
-	}
-	
-	public void setupChooseChar(){
-		selectRect[0] = 30;
-		selectRect[1] = 15;
+	//load characters picture
+	public void loadCharacters(){
 		for(int i=0; i<16; i++){
 			heros[i] = loadImage("pic/characters" + i + ".png");
 			heros[i].resize(120, 120);
 		}
 	}
 	
-	public void setupPlayChar(){
-		characters = new ArrayList<Character>();
-	}
-	
 	public void draw(){
 		background(255);
+		//Wait page
 		if(currentGameState == gameState.WAITCONNECT){
 			waitConnectPage.display();
 		}
+		//Select character page
 		else if(currentGameState == gameState.CHOOSECHAR){
-			drawChooseChar();
+			gameMusicPlayer.gameMusicPlay();
+			chooseCharactersPage();
 		}
+		//Play page
 		else if(currentGameState == gameState.PLAY){
-			drawField();
-			for(Character character : characters){
-				character.display();
-			}
+			playPage();
 		}
 	}
-
-	public void drawField(){
+	
+	
+	public void playPage(){
+		//Background
 		field = loadImage("pic/field.jpg");
 		image(field, 0, 0, width, height);
-	}
-
-	
-	public void drawChooseChar(){
-		background(255, 255, 148);
-		fill(0, 191, 255);
-		stroke(0, 191, 255);
-		rect(selectRect[0],selectRect[1],140,140);
-		for(int i = 0; i < 16; i++){
-			
-			image(heros[i],40+250*(i%5),25+ 250*(i/5));
-			
+		
+		//Character move
+		for(Character character : characters){
+			character.display();
 		}
 	}
 	
-	public Character newCharacter(){
-		Character tmp = new Character(this, startX, startY, heros[this.selectIndex]);
-		characters.add(tmp);
+	public void chooseCharactersPage(){
+		background(255, 255, 148);
+		//draw select rectangle
+		for(ChooseCharacter cc : selectRects){
+			cc.display();
+		}
+		//draw characters for selecting
+		for(int i = 0; i < 16; i++){
+			image(heros[i],40+250*(i%5),25+ 250*(i/5));
+		}
+	}
+	
+	public ChooseCharacter newRect(){
+		ChooseCharacter tmp;
+		tmp = new ChooseCharacter(this, 30, 15);
+		selectRects.add(tmp);
 		return tmp;
 	}
 	
-	public void chooseCharacter(String direction){
-		if (direction.equals("left")) {
-			int temp = selectIndex - 1;
-			temp = temp >= 0 ? temp : temp + 15;
-			setSelectIndex(temp);
-		}
-		else if (direction.equals("up")) {
-			int temp = selectIndex - 5;
-			temp = temp >= 0 ? temp : temp + 15;
-			setSelectIndex(temp);
-		}
-		else if (direction.equals("right")) {
-			int temp = selectIndex + 1;
-			temp = temp < 15 ? temp : temp - 15;
-			setSelectIndex(temp);
-		}
-		else if (direction.equals("down")) {
-			int temp = selectIndex + 5;
-			temp = temp < 15 ? temp : temp - 15;
-			setSelectIndex(temp);
-		}
-		else if (direction.equals("select")){
-			setupPlayChar();
-			currentGameState = gameState.PLAY;
-			gameMusicPlayer.gameMusicPlay();
-		}
+	public Character newCharacter(int player){
+		Character tmp = new Character(this, startX, startY, heros[this.selectRects.get(player).getSelectIndex()]);
+		characters.add(tmp);
+		return tmp;
 	}
-	
-	public void keyPressed(KeyEvent e){
-		if(currentGameState == gameState.WAITCONNECT){
-			if (key == ' '){
-				currentGameState = gameState.CHOOSECHAR;
-				gameMusicPlayer.gameMusicPlay();
-			}
-		}
-		else if(currentGameState == gameState.CHOOSECHAR){
-			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-				int temp = selectIndex - 1;
-				temp = temp >= 0 ? temp : temp + 15;
-				setSelectIndex(temp);
-			}
-			else if (e.getKeyCode() == KeyEvent.VK_UP) {
-				int temp = selectIndex - 5;
-				temp = temp >= 0 ? temp : temp + 15;
-				setSelectIndex(temp);
-			}
-			else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				int temp = selectIndex + 1;
-				temp = temp < 15 ? temp : temp - 15;
-				setSelectIndex(temp);
-			}
-			else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				int temp = selectIndex + 5;
-				temp = temp < 15 ? temp : temp - 15;
-				setSelectIndex(temp);
-			}
-			else if (e.getKeyCode() == KeyEvent.VK_ENTER){
-				setupPlayChar();
-				currentGameState = gameState.PLAY;
-				gameMusicPlayer.gameMusicPlay();
-			}
-		}
-		else if(currentGameState == gameState.PLAY){
-			for(int i=0; i<characters.size(); i++){
-				if(key == ' '){
-					characters.get(i).forward();
-				}
-			}
-		}
-	}
-	public void setSelectIndex(int selectIndex){
-		this.selectIndex = selectIndex;
-		selectRect[0] = 40 + 250 * (selectIndex % 5) - 10;
-		selectRect[1] = 25 + 250 * (selectIndex / 5) - 10;
-	}
-	
 }
