@@ -16,11 +16,11 @@ public class MainApplet extends PApplet{
 	private ArrayList<Character> characters; 
 	private int startX = 900, startY = 500;
 	private gameState currentGameState = gameState.WAITCONNECT;
-	private PImage[] heros = new PImage[15];
+	private PImage[] heros = new PImage[16];
 	private float[] selectRect = new float[2];
 	private int selectIndex = 0;
 	private GameMusicPlayer gameMusicPlayer = new GameMusicPlayer();
-	private WaitConnect waitConnectPage;
+	public WaitConnect waitConnectPage;
 	private String IP, port;
 	
 	public MainApplet(String IP, String port){
@@ -36,12 +36,16 @@ public class MainApplet extends PApplet{
 		smooth();
 	}
 	
+	public void setGameState(gameState state){
+		this.currentGameState = state;
+	}
+	
 	public void setupChooseChar(){
 		selectRect[0] = 30;
 		selectRect[1] = 15;
-		for(int i=0; i<15; i++){
+		for(int i=0; i<16; i++){
 			heros[i] = loadImage("pic/characters" + i + ".png");
-			heros[i].resize(150, 150);
+			heros[i].resize(120, 120);
 		}
 	}
 	
@@ -76,9 +80,9 @@ public class MainApplet extends PApplet{
 		fill(0, 191, 255);
 		stroke(0, 191, 255);
 		rect(selectRect[0],selectRect[1],140,140);
-		for(int i = 0; i < 9; i++){
+		for(int i = 0; i < 16; i++){
 			
-			image(heros[i],40+500*(i%3),25+ 250*(i/3));
+			image(heros[i],40+250*(i%5),25+ 250*(i/5));
 			
 		}
 	}
@@ -87,6 +91,34 @@ public class MainApplet extends PApplet{
 		Character tmp = new Character(this, startX, startY, heros[this.selectIndex]);
 		characters.add(tmp);
 		return tmp;
+	}
+	
+	public void chooseCharacter(String direction){
+		if (direction.equals("left")) {
+			int temp = selectIndex - 1;
+			temp = temp >= 0 ? temp : temp + 15;
+			setSelectIndex(temp);
+		}
+		else if (direction.equals("up")) {
+			int temp = selectIndex - 5;
+			temp = temp >= 0 ? temp : temp + 15;
+			setSelectIndex(temp);
+		}
+		else if (direction.equals("right")) {
+			int temp = selectIndex + 1;
+			temp = temp < 15 ? temp : temp - 15;
+			setSelectIndex(temp);
+		}
+		else if (direction.equals("down")) {
+			int temp = selectIndex + 5;
+			temp = temp < 15 ? temp : temp - 15;
+			setSelectIndex(temp);
+		}
+		else if (direction.equals("select")){
+			setupPlayChar();
+			currentGameState = gameState.PLAY;
+			gameMusicPlayer.gameMusicPlay();
+		}
 	}
 	
 	public void keyPressed(KeyEvent e){
@@ -99,22 +131,22 @@ public class MainApplet extends PApplet{
 		else if(currentGameState == gameState.CHOOSECHAR){
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 				int temp = selectIndex - 1;
-				temp = temp >= 0 ? temp : temp + 9;
+				temp = temp >= 0 ? temp : temp + 15;
 				setSelectIndex(temp);
 			}
 			else if (e.getKeyCode() == KeyEvent.VK_UP) {
-				int temp = selectIndex - 3;
-				temp = temp >= 0 ? temp : temp + 9;
+				int temp = selectIndex - 5;
+				temp = temp >= 0 ? temp : temp + 15;
 				setSelectIndex(temp);
 			}
 			else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				int temp = selectIndex + 1;
-				temp = temp < 9 ? temp : temp - 9;
+				temp = temp < 15 ? temp : temp - 15;
 				setSelectIndex(temp);
 			}
 			else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				int temp = selectIndex + 3;
-				temp = temp < 9 ? temp : temp - 9;
+				int temp = selectIndex + 5;
+				temp = temp < 15 ? temp : temp - 15;
 				setSelectIndex(temp);
 			}
 			else if (e.getKeyCode() == KeyEvent.VK_ENTER){
@@ -133,8 +165,8 @@ public class MainApplet extends PApplet{
 	}
 	public void setSelectIndex(int selectIndex){
 		this.selectIndex = selectIndex;
-		selectRect[0] = 40 + 500 * (selectIndex % 3) - 10;
-		selectRect[1] = 25 + 250 * (selectIndex / 3) - 10;
+		selectRect[0] = 40 + 250 * (selectIndex % 5) - 10;
+		selectRect[1] = 25 + 250 * (selectIndex / 5) - 10;
 	}
 	
 }

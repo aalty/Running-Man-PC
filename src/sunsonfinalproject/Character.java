@@ -10,7 +10,6 @@ public class Character {
 
 	public float x, y, radius;
 	public int location=0, diff=0;
-	private String name;
 	private PApplet parent;
 	private PImage img;
 	private ArrayList<Character> targets = new ArrayList<Character>();
@@ -67,12 +66,8 @@ public class Character {
 	 * Use display() to draw the character on the sketch.
 	 */
 	public void display(){	
-		this.img.resize(50, 50);
+		this.img.resize(100, 100);
 		this.parent.image(this.img, x, y);
-//		this.parent.fill(0,255,204);
-//		this.parent.rect(x, y, 50, 50);
-//		this.parent.fill(0);
-//		this.parent.text(this.name,x+10,y+25);
 		while(diff > 0){
 			forward();
 			diff--;

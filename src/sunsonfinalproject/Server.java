@@ -24,7 +24,7 @@ public class Server {
 	private List<ConnectionThread> connections = new ArrayList<ConnectionThread>();
 	private MainApplet applet;
 	private int appletWidth = 1200, appletHeight = 820;
-	private static int portNum;
+	private static int portNum;	
 	
 	public Server() {
 		final CountDownLatch latch = new CountDownLatch(1);
@@ -67,7 +67,7 @@ public class Server {
 	
 	public void runForever() {
 		System.out.println("Server starts waiting for client.");
-		while(true){
+		while(this.connections.size() < 4){
 			try{
 				Socket ToClient = this.serverSocket.accept();
 				System.out.println("Get connection from client"
@@ -77,6 +77,7 @@ public class Server {
 				connection = new ConnectionThread(ToClient);
 				connection.start();
 				this.connections.add(connection);
+				
 				
 			}catch(BindException e){
 				e.printStackTrace();
@@ -99,10 +100,10 @@ public class Server {
 		private Socket socket;
 		private Character character;
 		private int lastShake=0;
+		private gameState currentGameState = gameState.WAITCONNECT;
 		
 		public ConnectionThread(Socket socket){
 			this.socket = socket;
-			character = applet.newCharacter();
 			try{
 				this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 				this.writer = new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream()));
@@ -115,13 +116,29 @@ public class Server {
 			while(true){
 				try{
 					String line = this.reader.readLine();
-					character.diff = Integer.parseInt(line) - lastShake;
-					lastShake = Integer.parseInt(line);
-					System.out.println("server:"+ line + " " + character.diff);
-					Server.this.broadcast(line);
+					//Wait
+					if(this.currentGameState == gameState.WAITCONNECT){
+						if(line.equals("enter")){
+							this.currentGameState = gameState.CHOOSECHAR;
+						}
+					}
+					//Choose characters
+					else if(this.currentGameState == gameState.CHOOSECHAR){
+						applet.chooseCharacter(line);
+						if(line.equals("select")){
+							character = applet.newCharacter();
+							this.currentGameState = gameState.PLAY;
+						}
+					}
+					//Play
+					else if(this.currentGameState == gameState.PLAY){
+						character.diff = Integer.parseInt(line) - lastShake;
+						lastShake = Integer.parseInt(line);
+					}
+					System.out.println("server:"+ line);
+//					Server.this.broadcast(line);
 				}
 				catch(IOException e){
-					
 					e.printStackTrace();
 				}
 			}
