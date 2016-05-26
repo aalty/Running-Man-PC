@@ -20,7 +20,7 @@ public class WaitConnect {
 	}
 	
 	public void loadPic(){
-		waitImg = new Gif(this.parent, "pic/wait.gif");
+		waitImg = new Gif(this.parent, "pic/waiting.gif");
 		waitImg.play();
 	}
 	
@@ -29,6 +29,8 @@ public class WaitConnect {
 	}
 	
 	public void display(){
+		this.parent.image(waitImg, 0, -50);
+		/* old version wait
 		int space = 100;
 		int x = this.parent.width/2;
 		int i=0;
@@ -47,5 +49,6 @@ public class WaitConnect {
 			this.parent.text("Get connection from client: " + client + "\n", x-160, this.parent.height/(i+2)*space);
 			i++;
 		}
+		*/
 	}
 }
