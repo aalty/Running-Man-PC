@@ -21,7 +21,9 @@ public class WaitConnect {
 	
 	public void loadPic(){
 		waitImg = new Gif(this.parent, "pic/waiting.gif");
+		//waitImg.resize(1200, 500);
 		waitImg.play();
+		
 	}
 	
 	public void sendClientIP(String IP){
@@ -29,7 +31,7 @@ public class WaitConnect {
 	}
 	
 	public void display(){
-		this.parent.image(waitImg, 0, -50);
+		this.parent.image(waitImg, 0, 0);
 		/* old version wait
 		int space = 100;
 		int x = this.parent.width/2;
@@ -38,17 +40,21 @@ public class WaitConnect {
 		
 		//Image
 		this.parent.image(waitImg, x-waitImg.width, this.parent.height/2-space);
+		*/
 		
 		//Word part
+		int space = 100;
+		int x = this.parent.width/2;
+		int i=0;
 		this.parent.textSize(26);
 		this.parent.fill(0);
-		this.parent.text("Waiting for players...", x-130, this.parent.height/2);
+		//this.parent.text("Waiting for players...", x-130, this.parent.height/2);
 		this.parent.text("Server IP:     "+ this.IP + "\nServer port: " + this.port, x-160, this.parent.height/2+space);
 		//print client statement
 		for(String client : clientIP){
 			this.parent.text("Get connection from client: " + client + "\n", x-160, this.parent.height/(i+2)*space);
 			i++;
 		}
-		*/
+		
 	}
 }
