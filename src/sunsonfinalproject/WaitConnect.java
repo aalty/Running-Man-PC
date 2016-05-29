@@ -3,6 +3,7 @@ package sunsonfinalproject;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
+import processing.core.PFont;
 import gifAnimation.*;
 
 public class WaitConnect {
@@ -10,12 +11,15 @@ public class WaitConnect {
 	private String IP, port;
 	private Gif waitImg;
 	private ArrayList<String> clientIP;
+	private PFont font;
 	
 	public WaitConnect(PApplet parent, String IP, String port){
 		this.parent = parent;
 		this.IP = IP;
 		this.port = port;
 		clientIP = new ArrayList<String>();
+		// load font
+		font = this.parent.createFont("font/a.ttf", 50);
 		loadPic();
 	}
 	
@@ -46,13 +50,14 @@ public class WaitConnect {
 		int space = 100;
 		int x = this.parent.width/2;
 		int i=0;
-		this.parent.textSize(26);
+		this.parent.textFont(font, 45);
 		this.parent.fill(0);
 		//this.parent.text("Waiting for players...", x-130, this.parent.height/2);
-		this.parent.text("Server IP:     "+ this.IP + "\nServer port: " + this.port, x-160, this.parent.height/2+space);
+		this.parent.text("Server IP:     "+ this.IP + "\nServer port: " + this.port, x-220, this.parent.height/2+space);
 		//print client statement
+		this.parent.textSize(25);
 		for(String client : clientIP){
-			this.parent.text("Get connection from client: " + client + "\n", x-160, this.parent.height/(i+2)*space);
+			this.parent.text("Get connection from client: " + client + "\n", 50, 50+i*50);
 			i++;
 		}
 		

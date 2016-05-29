@@ -11,6 +11,7 @@ public class ChooseCharacter {
 	private float[] selectRect;
 	private boolean select=false;
 	
+	
 	public ChooseCharacter(PApplet parent, float x, float y){
 		Random ran = new Random();
 		this.parent = parent;

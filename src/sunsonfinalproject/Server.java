@@ -78,14 +78,14 @@ public class Server {
 					
 					connection = new ConnectionThread(ToClient, this.player);
 					this.player++;
+					applet.waitConnectPage.sendClientIP(ToClient.getInetAddress().toString());
 					connection.start();
 					this.connections.add(connection);
-					applet.waitConnectPage.sendClientIP(ToClient.getInetAddress().toString());
-					this.broadcast("start");
 				}
 				
-				if(this.connections.size() == 2){
+				if(this.connections.size() >= 2){
 					applet.currentGameState = gameState.CHOOSECHAR;
+					broadcast("start");
 				}
 						
 				
@@ -119,6 +119,7 @@ public class Server {
 			try{
 				this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 				this.writer = new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream()));
+//				sendMessage("start");
 			}catch(IOException e){
 				e.printStackTrace();
 			}
@@ -147,6 +148,7 @@ public class Server {
 							//PLAY start, the fastest client control
 							if(selectCnt == connections.size() && applet.currentGameState != gameState.PLAY){
 								applet.currentGameState = gameState.PLAY;
+								Server.this.broadcast("game");
 							}
 						}
 					}
