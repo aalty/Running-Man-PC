@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import javafx.embed.swing.JFXPanel;
@@ -25,7 +26,7 @@ public class Server {
 	private MainApplet applet;
 	private int appletWidth = 1200, appletHeight = 820;
 	private static int portNum;
-	private int player=0, selectCnt=0;
+	private int player=0, selectCnt=0, playerNum;
 	
 	public Server() {
 		final CountDownLatch latch = new CountDownLatch(1);
@@ -43,6 +44,7 @@ public class Server {
 		}
 		
 		GUI();
+		this.playerNum = Integer.parseInt(JOptionPane.showInputDialog("How many players?", "3"));
 		
 		try {
 			this.serverSocket = new ServerSocket(portNum);
@@ -70,7 +72,7 @@ public class Server {
 		System.out.println("Server starts waiting for client.");
 		while(true){
 			try{
-				if(this.connections.size() < 4){
+				if(this.connections.size() < 10){
 					Socket ToClient = this.serverSocket.accept();
 					System.out.println("Get connection from client"
 										+ ToClient.getInetAddress()+":"
@@ -83,7 +85,7 @@ public class Server {
 					this.connections.add(connection);
 				}
 				
-				if(this.connections.size() >= 2){
+				if(this.connections.size() >= this.playerNum){
 					applet.currentGameState = gameState.CHOOSECHAR;
 					broadcast("start");
 				}
