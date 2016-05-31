@@ -159,11 +159,6 @@ public class Server {
 					}
 					//Play
 					else if(this.currentGameState == gameState.PLAY){
-						character.diff = Integer.parseInt(line) - lastShake;
-						lastShake = Integer.parseInt(line);
-						
-						//System.out.println("player_num "+applet.player_num+" end_num "+applet.end_num);
-						
 						if(applet.end_num==applet.player_num){
 							applet.currentGameState = gameState.END;
 						}

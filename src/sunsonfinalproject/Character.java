@@ -30,56 +30,65 @@ public class Character {
 	}
 	
 	public void forward(){
-		int rightX = parent.width - this.borderOffset;
+		int rightX = parent.width - this.borderOffset - 100;
 		int leftX = this.borderOffset;
 		int upY = this.borderOffset;
 		int downY = parent.height - this.borderOffset;
 		int middleY = this.parent.height/2;
 		int startY = 500;
-//		int startX = 50;
+		int startX = 50;
 		
 		//win
 		if(winFlag == 2){
 			//don`t run
 		}
-		//下
+		
 		else if(rightX > this.x && this.x > leftX && this.y == startY){
-
 			//finish a round
 			if(winFlag == 1){
 				winFlag = 2;
 			}
 			this.x += 20;
-			
 			System.out.println("下："+this.x + " " + this.y + " " + rightX);
 		}
-		//右
-		else if(rightX > this.x && this.x > leftX && this.y > middleY){
+		else if(rightX < this.x && this.x > leftX && this.y > middleY){
 			this.y -= 15;
 			winFlag = 1;
-			System.out.println("右："+this.x + " " + this.y);
+			System.out.println("下中右："+this.x + " " + this.y);
 		}
-		//中
-		else if(this.x <= leftX && this.y < downY && this.y >= middleY){
-			this.y -= 15;
-			winFlag = 1;
+		else if(this.x > leftX && this.y < middleY && this.y > upY){
+			this.x -= 20;
 			System.out.println("中："+this.x + " " + this.y);
 		}
-		//撌�
-		else if(this.x <= leftX && this.y > upY){
+		else if(this.x < leftX && this.y > upY){
 			this.y -= 15;
-			System.out.println("左："+this.x + " " + this.y);
+			System.out.println("中中上："+this.x + " " + this.y);
 		}
-		//銝�
-		else if(this.x < rightX && this.y <= upY){
+		else if(this.x < rightX && this.y < upY){
 			this.x += 20;
-			System.out.println("上："+this.x + " " + this.y);
 		}
-		//�
-		else if(this.x >= rightX && this.y < downY){
-			this.y += 15;
-			winFlag = 1;
-		}
+		
+		
+//		else if(this.x <= leftX && this.y < downY && this.y >= middleY){
+//			this.y -= 15;
+//			winFlag = 1;
+//			System.out.println("中："+this.x + " " + this.y);
+//		}
+//		//撌�
+//		else if(this.x <= leftX && this.y > upY){
+//			this.y -= 15;
+//			System.out.println("左："+this.x + " " + this.y);
+//		}
+//		//銝�
+//		else if(this.x < rightX && this.y <= upY){
+//			this.x += 20;
+//			System.out.println("上："+this.x + " " + this.y);
+//		}
+//		//�
+//		else if(this.x >= rightX && this.y < downY){
+//			this.y += 15;
+//			winFlag = 1;
+//		}
 		
 		
 	}
