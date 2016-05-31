@@ -70,7 +70,7 @@ public class Server {
 	}
 	
 	public void runForever() {
-		//System.out.println("Server starts waiting for client.");
+		System.out.println("Server starts waiting for client.");
 		while(true){
 			try{
 				
@@ -159,12 +159,20 @@ public class Server {
 					}
 					//Play
 					else if(this.currentGameState == gameState.PLAY){
-						character.diff = Integer.parseInt(line) - lastShake;
-						lastShake = Integer.parseInt(line);
-						
 						//System.out.println("player_num "+applet.player_num+" end_num "+applet.end_num);
-						
+						System.out.println("end "+applet.end_num+" players "+applet.player_num);
 						if(applet.end_num==applet.player_num){
+							System.out.println("----score: "+character.set_score+" ----");
+							if(character.set_score==1){
+								System.out.println("INDEX: "+this.playerIndex);
+								sendMessage("one");
+							}
+							else if(character.set_score==2)
+								sendMessage("two");
+							else if(character.set_score==3)
+								sendMessage("three");
+							else if(character.set_score==4)
+								sendMessage("four");
 							applet.currentGameState = gameState.END;
 						}
 						
@@ -175,6 +183,7 @@ public class Server {
 						else{
 							character.diff = Integer.parseInt(line) - lastShake;
 							lastShake = Integer.parseInt(line);
+							System.out.println(lastShake);
 							Server.this.connections.get(this.playerIndex).sendMessage("run");
 						}
 					}

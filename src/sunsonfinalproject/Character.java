@@ -44,7 +44,7 @@ public class Character {
 		}
 		//下
 		else if(rightX > this.x && this.x > leftX && this.y == startY){
-
+		//else if(this.x > leftX && this.y == startY){
 			//finish a round
 			if(winFlag == 1){
 				winFlag = 2;
@@ -76,9 +76,10 @@ public class Character {
 			System.out.println("上："+this.x + " " + this.y);
 		}
 		//�
-		else if(this.x >= rightX && this.y < downY){
+		//else if(this.x >= rightX && this.y < downY){
+		if(this.x >= 600){
 			this.y += 15;
-			winFlag = 1;
+			winFlag = 2;
 		}
 		
 		
