@@ -13,7 +13,7 @@ public class MainApplet extends PApplet{
 	PImage field;
 	private ArrayList<Character> characters; 
 	private ArrayList<ChooseCharacter> selectRects;
-	private int startX = 900, startY = 500;
+	private int startX = 50, startY = 500;
 	public gameState currentGameState;
 	private PImage[] heros = new PImage[17];
 	private GameMusicPlayer gameMusicPlayer;
@@ -21,6 +21,7 @@ public class MainApplet extends PApplet{
 	private String IP, port;
 	public int end_num=0;
 	public int player_num=0;
+	private int rectCnt=0;
 	
 	public MainApplet(String IP, String port){
 		this.IP= IP;
@@ -117,7 +118,8 @@ public class MainApplet extends PApplet{
 	
 	public ChooseCharacter newRect(){
 		ChooseCharacter tmp;
-		tmp = new ChooseCharacter(this, 680, 60);
+		tmp = new ChooseCharacter(this, 680, 60, rectCnt);
+		this.rectCnt++;
 		selectRects.add(tmp);
 		return tmp;
 	}

@@ -167,12 +167,26 @@ public class Server {
 						if(applet.end_num==applet.player_num){
 							applet.currentGameState = gameState.END;
 						}
+						
+						if(line.equals("bomb")){
+							int frontPlayerIndex = Server.this.getFrontPlayerIndex(this.playerIndex);
+							Server.this.connections.get(frontPlayerIndex).sendMessage("sleep");
+						}
+						else{
+							character.diff = Integer.parseInt(line) - lastShake;
+							lastShake = Integer.parseInt(line);
+							Server.this.connections.get(this.playerIndex).sendMessage("run");
+						}
 					}
 				}
 				catch(IOException e){
 					e.printStackTrace();
 				}
 			}
+		}
+		
+		public int getLastShake(){
+			return this.lastShake;
 		}
 		
 		public void sendMessage(String msg){
@@ -192,6 +206,26 @@ public class Server {
 		}
 	    return null;
 	}
+	
+	public int getFrontPlayerIndex(int playerIndex) {
+		int frontPlayerIndex = 0;
+		int currentPlayerLastShake = this.connections.get(playerIndex).getLastShake();
+		int maxDistance = 0;
+		
+		for(int i = 0; i < this.playerNum; i++){
+			if(i != playerIndex){
+				int otherPlayerLastShake = this.connections.get(i).getLastShake();
+				int distance = otherPlayerLastShake - currentPlayerLastShake;
+				if(distance > maxDistance){
+					maxDistance = distance;
+					frontPlayerIndex = i;
+				}
+			}
+		}
+		return frontPlayerIndex;
+	}
+	
+	
 	
 	public static void main(String[] args) {
 		portNum = 8000;

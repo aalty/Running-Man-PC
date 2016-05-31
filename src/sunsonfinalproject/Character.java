@@ -13,9 +13,10 @@ public class Character {
 	private PApplet parent;
 	private PImage img;
 	private ArrayList<Character> targets = new ArrayList<Character>();
-	private int borderOffset = 100;
-	public int winFlag=0;
+
 	public int set_score=0;
+	private int borderOffset = 0;
+	public int winFlag=0;
 	
 	
 	/*
@@ -33,28 +34,46 @@ public class Character {
 		int leftX = this.borderOffset;
 		int upY = this.borderOffset;
 		int downY = parent.height - this.borderOffset;
+		int middleY = this.parent.height/2;
 		int startY = 500;
-//		int startX = 900;
+//		int startX = 50;
 		
 		//win
 		if(winFlag == 2){
 			//don`t run
 		}
-		//銝�
-		else if(this.x > leftX && this.y == startY){
+		//下
+		else if(rightX > this.x && this.x > leftX && this.y == startY){
+
 			//finish a round
 			if(winFlag == 1){
 				winFlag = 2;
 			}
-			this.x -= 20;
+			this.x += 20;
+			
+			System.out.println("下："+this.x + " " + this.y + " " + rightX);
+		}
+		//右
+		else if(rightX > this.x && this.x > leftX && this.y > middleY){
+			this.y -= 15;
+			winFlag = 1;
+			System.out.println("右："+this.x + " " + this.y);
+		}
+		//中
+		else if(this.x <= leftX && this.y < downY && this.y >= middleY){
+			this.y -= 15;
+			winFlag = 1;
+			System.out.println("中："+this.x + " " + this.y);
 		}
 		//撌�
 		else if(this.x <= leftX && this.y > upY){
 			this.y -= 15;
+			System.out.println("左："+this.x + " " + this.y);
 		}
 		//銝�
 		else if(this.x < rightX && this.y <= upY){
 			this.x += 20;
+			System.out.println("上："+this.x + " " + this.y);
 		}
 		//�
 		else if(this.x >= rightX && this.y < downY){
@@ -68,6 +87,7 @@ public class Character {
 	public void end_play(){
 		this.img.resize(250, 250);
 		this.parent.image(this.img, x, y);
+
 	}
 	
 	/*

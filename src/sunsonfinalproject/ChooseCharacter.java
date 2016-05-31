@@ -10,17 +10,38 @@ public class ChooseCharacter {
 	private int selectIndex;
 	private float[] selectRect;
 	private boolean select=false;
+	private Random ran;
 	
-	
-	public ChooseCharacter(PApplet parent, float x, float y){
-		Random ran = new Random();
+	public ChooseCharacter(PApplet parent, float x, float y, int cnt){
 		this.parent = parent;
 		
 		//color initial
 		this.rectColor = new int[3];
-		this.rectColor[0] = ran.nextInt(255);	//R
-		this.rectColor[1] = ran.nextInt(255);	//G
-		this.rectColor[2] = ran.nextInt(255);	//B
+		if(cnt == 0){ //Red
+			this.rectColor[0] = 255;	//R
+			this.rectColor[1] = 0;		//G
+			this.rectColor[2] = 0;		//B
+		}
+		else if(cnt == 1){ //Green
+			this.rectColor[0] = 0;
+			this.rectColor[1] = 255;
+			this.rectColor[2] = 0;
+		}
+		else if(cnt == 2){ //Blue
+			this.rectColor[0] = 0;
+			this.rectColor[1] = 0;
+			this.rectColor[2] = 255;
+		}
+		else if(cnt == 3){ //Cyan
+			this.rectColor[0] = 0;
+			this.rectColor[1] = 255;
+			this.rectColor[2] = 255;
+		}
+		else{//random
+			this.rectColor[0] = ran.nextInt(255);
+			this.rectColor[1] = ran.nextInt(255);
+			this.rectColor[2] = ran.nextInt(255);
+		}
 		
 		//position initial
 		this.selectRect = new float[2];
