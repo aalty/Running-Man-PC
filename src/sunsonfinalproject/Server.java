@@ -160,9 +160,11 @@ public class Server {
 							int frontPlayerIndex = Server.this.getFrontPlayerIndex(this.playerIndex);
 							Server.this.connections.get(frontPlayerIndex).sendMessage("sleep");
 						}
-						
-						character.diff = Integer.parseInt(line) - lastShake;
-						lastShake = Integer.parseInt(line);
+						else{
+							character.diff = Integer.parseInt(line) - lastShake;
+							lastShake = Integer.parseInt(line);
+							Server.this.connections.get(this.playerIndex).sendMessage("run");
+						}
 					}
 				}
 				catch(IOException e){
