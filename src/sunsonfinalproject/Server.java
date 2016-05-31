@@ -131,7 +131,7 @@ public class Server {
 			while(true){
 				try{
 					String line = this.reader.readLine();
-					System.out.println("server:"+this.playerIndex+" "+ line);
+//					System.out.println("server:"+this.playerIndex+" "+ line);
 					//Wait
 					if(this.currentGameState == gameState.WAITCONNECT){
 						if(line.equals("enter")){
