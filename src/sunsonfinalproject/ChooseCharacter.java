@@ -32,22 +32,30 @@ public class ChooseCharacter {
 		if(this.select == false){
 			if (direction.equals("left")) {
 				int temp = selectIndex - 1;
-				temp = temp >= 0 ? temp : temp + 15;
+				temp = temp >= 0 ? temp : temp + 17;
 				setSelectIndex(temp);
 			}
 			else if (direction.equals("up")) {
-				int temp = selectIndex - 5;
-				temp = temp >= 0 ? temp : temp + 15;
+				int temp;
+				if(selectIndex>1)
+					temp= selectIndex - 5;
+				else
+					temp= selectIndex - 3;
+				temp = temp >= 0 ? temp : temp + 17;
 				setSelectIndex(temp);
 			}
 			else if (direction.equals("right")) {
 				int temp = selectIndex + 1;
-				temp = temp < 15 ? temp : temp - 15;
+				temp = temp < 17 ? temp : temp - 17;
 				setSelectIndex(temp);
 			}
 			else if (direction.equals("down")) {
-				int temp = selectIndex + 5;
-				temp = temp < 15 ? temp : temp - 15;
+				int temp;
+				if(selectIndex>1)
+					temp= selectIndex + 5;
+				else
+					temp= selectIndex + 3;
+				temp = temp < 17 ? temp : temp - 17;
 				setSelectIndex(temp);
 			}
 			else if (direction.equals("select")){
@@ -61,11 +69,11 @@ public class ChooseCharacter {
 		this.parent.stroke(rectColor[0], rectColor[1], rectColor[2]);
 		this.parent.rect(selectRect[0],selectRect[1],140,140);
 	}
-	
+
 	public void setSelectIndex(int selectIndex){
 		this.selectIndex = selectIndex;
-		selectRect[0] = 40 + 250 * (selectIndex % 5) - 10;
-		selectRect[1] = 25 + 250 * (selectIndex / 5) - 10;
+		selectRect[0] = 120 + 190 * ((selectIndex+3) % 5) - 10;
+		selectRect[1] = 70 + 190 * ((selectIndex+3) / 5) - 10;
 	}
 	
 	public boolean getSelect(){

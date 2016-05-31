@@ -15,7 +15,7 @@ public class MainApplet extends PApplet{
 	private ArrayList<ChooseCharacter> selectRects;
 	private int startX = 900, startY = 500;
 	public gameState currentGameState;
-	private PImage[] heros = new PImage[16];
+	private PImage[] heros = new PImage[17];
 	private GameMusicPlayer gameMusicPlayer;
 	public WaitConnect waitConnectPage;
 	private String IP, port;
@@ -39,7 +39,7 @@ public class MainApplet extends PApplet{
 	
 	//load characters picture
 	public void loadCharacters(){
-		for(int i=0; i<16; i++){
+		for(int i=0; i<17; i++){
 			heros[i] = loadImage("pic/characters" + i + ".png");
 			heros[i].resize(120, 120);
 		}
@@ -65,7 +65,7 @@ public class MainApplet extends PApplet{
 	
 	public void playPage(){
 		//Background
-		field = loadImage("pic/field.jpg");
+		field = loadImage("pic/bg.jpeg");
 		image(field, 0, 0, width, height);
 		
 		//Character move
@@ -75,20 +75,22 @@ public class MainApplet extends PApplet{
 	}
 	
 	public void chooseCharactersPage(){
-		background(255, 255, 148);
+		image(loadImage("pic/select.jpg"),0,0); 
+		//background(255, 255, 148);
 		//draw select rectangle
 		for(ChooseCharacter cc : selectRects){
 			cc.display();
 		}
+		
 		//draw characters for selecting
-		for(int i = 0; i < 16; i++){
-			image(heros[i],40+250*(i%5),25+ 250*(i/5));
+		for(int i = 0; i < 17; i++){
+				image(heros[i],120+190*((i+3)%5),70+190*((i+3)/5));
 		}
 	}
 	
 	public ChooseCharacter newRect(){
 		ChooseCharacter tmp;
-		tmp = new ChooseCharacter(this, 30, 15);
+		tmp = new ChooseCharacter(this, 680, 60);
 		selectRects.add(tmp);
 		return tmp;
 	}
