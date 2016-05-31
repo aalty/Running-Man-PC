@@ -5,7 +5,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 enum gameState{
-	START, WAITCONNECT, CHOOSECHAR, WAITOTHERS ,PLAY
+	START, WAITCONNECT, CHOOSECHAR, WAITOTHERS ,PLAY, END
 }
 
 @SuppressWarnings("serial")
@@ -19,6 +19,8 @@ public class MainApplet extends PApplet{
 	private GameMusicPlayer gameMusicPlayer;
 	public WaitConnect waitConnectPage;
 	private String IP, port;
+	public int end_num=0;
+	public int player_num=0;
 	
 	public MainApplet(String IP, String port){
 		this.IP= IP;
@@ -60,17 +62,42 @@ public class MainApplet extends PApplet{
 		else if(currentGameState == gameState.PLAY){
 			playPage();
 		}
+		
+		else if(currentGameState == gameState.END){
+			endPage();
+		}
 	}
 	
+	public void endPage(){
+		field = loadImage("pic/win.jpg");
+		image(field, 0, 0, width, height);
+		for(Character character : characters){
+			if(character.set_score==1){character.x=440; character.y=200;}
+			else if(character.set_score==2){character.x=160; character.y=255;}
+			else if(character.set_score==3){character.x=700; character.y=300;}
+			else if(character.set_score==4){character.x=950; character.y=440;}
+			character.end_play();
+		}
+	}
 	
 	public void playPage(){
 		//Background
 		field = loadImage("pic/bg.jpeg");
 		image(field, 0, 0, width, height);
-		
+		//System.out.println("player num: "+player_num);
 		//Character move
 		for(Character character : characters){
 			character.display();
+			if(end_num==player_num-1&&player_num!=1&&character.set_score==0){
+				character.set_score=player_num;
+				end_num++;
+				break;
+			}
+			if(character.winFlag==2&&character.set_score==0){
+				end_num++;
+				character.set_score=end_num;
+				System.out.println("end_num "+end_num);
+			}
 		}
 	}
 	

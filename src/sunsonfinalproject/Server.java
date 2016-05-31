@@ -45,6 +45,7 @@ public class Server {
 		
 		GUI();
 		this.playerNum = Integer.parseInt(JOptionPane.showInputDialog("How many players?", "3"));
+		applet.player_num=this.playerNum;
 		
 		try {
 			this.serverSocket = new ServerSocket(portNum);
@@ -69,9 +70,12 @@ public class Server {
 	}
 	
 	public void runForever() {
-		System.out.println("Server starts waiting for client.");
+		//System.out.println("Server starts waiting for client.");
 		while(true){
 			try{
+				
+				
+				
 				if(this.connections.size() < 10){
 					Socket ToClient = this.serverSocket.accept();
 					System.out.println("Get connection from client"
@@ -88,8 +92,7 @@ public class Server {
 				if(this.connections.size() >= this.playerNum){
 					applet.currentGameState = gameState.CHOOSECHAR;
 					broadcast("start");
-				}
-						
+				}		
 				
 			}catch(BindException e){
 				e.printStackTrace();
@@ -158,6 +161,12 @@ public class Server {
 					else if(this.currentGameState == gameState.PLAY){
 						character.diff = Integer.parseInt(line) - lastShake;
 						lastShake = Integer.parseInt(line);
+						
+						//System.out.println("player_num "+applet.player_num+" end_num "+applet.end_num);
+						
+						if(applet.end_num==applet.player_num){
+							applet.currentGameState = gameState.END;
+						}
 					}
 				}
 				catch(IOException e){

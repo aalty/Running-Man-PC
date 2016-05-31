@@ -14,7 +14,8 @@ public class Character {
 	private PImage img;
 	private ArrayList<Character> targets = new ArrayList<Character>();
 	private int borderOffset = 100;
-	private int winFlag=0;
+	public int winFlag=0;
+	public int set_score=0;
 	
 	
 	/*
@@ -39,7 +40,7 @@ public class Character {
 		if(winFlag == 2){
 			//don`t run
 		}
-		//下
+		//銝�
 		else if(this.x > leftX && this.y == startY){
 			//finish a round
 			if(winFlag == 1){
@@ -47,19 +48,26 @@ public class Character {
 			}
 			this.x -= 20;
 		}
-		//左
+		//撌�
 		else if(this.x <= leftX && this.y > upY){
 			this.y -= 15;
 		}
-		//上
+		//銝�
 		else if(this.x < rightX && this.y <= upY){
 			this.x += 20;
 		}
-		//右
+		//�
 		else if(this.x >= rightX && this.y < downY){
 			this.y += 15;
 			winFlag = 1;
 		}
+		
+		
+	}
+	
+	public void end_play(){
+		this.img.resize(250, 250);
+		this.parent.image(this.img, x, y);
 	}
 	
 	/*
