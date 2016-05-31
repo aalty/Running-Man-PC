@@ -131,7 +131,7 @@ public class Server {
 			while(true){
 				try{
 					String line = this.reader.readLine();
-//					System.out.println("server:"+this.playerIndex+" "+ line);
+					System.out.println("server:"+this.playerIndex+" "+ line);
 					//Wait
 					if(this.currentGameState == gameState.WAITCONNECT){
 						if(line.equals("enter")){
@@ -157,12 +157,12 @@ public class Server {
 					//Play
 					else if(this.currentGameState == gameState.PLAY){
 						if(line.equals("bomb")){
-							int frontPlayerIndex = Server.this.getFrontPlayerIndex();
+							int frontPlayerIndex = Server.this.getFrontPlayerIndex(this.playerIndex);
+							Server.this.connections.get(frontPlayerIndex).sendMessage("sleep");
 						}
 						
 						character.diff = Integer.parseInt(line) - lastShake;
 						lastShake = Integer.parseInt(line);
-						
 					}
 				}
 				catch(IOException e){
@@ -210,6 +210,8 @@ public class Server {
 		}
 		return frontPlayerIndex;
 	}
+	
+	
 	
 	public static void main(String[] args) {
 		portNum = 8000;
