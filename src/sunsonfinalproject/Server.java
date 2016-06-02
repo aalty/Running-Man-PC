@@ -135,7 +135,7 @@ public class Server {
 			while(true){
 				try{
 					String line = this.reader.readLine();
-//					System.out.println("server:"+this.playerIndex+" "+ line);
+					System.out.println("server:"+this.playerIndex+" "+ line);
 					//Wait
 					if(this.currentGameState == gameState.WAITCONNECT){
 						if(line.equals("enter")){
@@ -190,6 +190,7 @@ public class Server {
 							if(frontPlayerIndex>=0){
 								Server.this.connections.get(frontPlayerIndex).sendMessage("sleep");
 								Server.this.connections.get(frontPlayerIndex).character.bomb = 1;
+								sendMessage("success");
 							}
 							System.out.println(frontPlayerIndex);
 						}
