@@ -13,7 +13,7 @@ public class MainApplet extends PApplet{
 	PImage field;
 	private ArrayList<Character> characters; 
 	private ArrayList<ChooseCharacter> selectRects;
-	private int startX = 40, startY = 500;
+	private int startX = 50, startY = 500;
 	public gameState currentGameState;
 	private PImage[] heros = new PImage[17];
 	private GameMusicPlayer gameMusicPlayer;

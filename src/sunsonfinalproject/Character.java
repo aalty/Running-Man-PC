@@ -13,10 +13,11 @@ public class Character {
 	private PApplet parent;
 	private PImage img;
 	private ArrayList<Character> targets = new ArrayList<Character>();
-	private int borderOffset = 40;
+	private int borderOffset = 0;
 	public int winFlag=0;
 	public int bomb=0;
 	public int set_score=0;
+	private int angle=0;
 	
 	/*
 	 * Store these variables when instance created.
@@ -36,6 +37,8 @@ public class Character {
 		int middleY = 300;
 		int startY = 500;
 		int startX = 50;
+		int r = 50;
+		
 		//win
 		if(winFlag == 2){
 			//don`t run
@@ -47,7 +50,10 @@ public class Character {
 		}
 		else if(rightX < this.x && this.x > leftX && this.y > middleY){
 			this.y -= 15;
-			winFlag = 1;
+//			this.angle++;
+//			this.x = (int)(rightX-10 + r*PApplet.cos(this.angle));
+//			this.y = (int)(startY-10 + r*PApplet.sin(this.angle));
+//			winFlag = 1;
 			System.out.println("下中右："+this.x + " " + this.y);
 		}
 		else if(this.x > leftX && this.y < middleY && this.y > upY){

@@ -178,7 +178,7 @@ public class Server {
 							applet.currentGameState = gameState.END;
 						}
 						
-						if(line.equals("bomb")){
+						else if(line.equals("bomb")){
 							int frontPlayerIndex = Server.this.getFrontPlayerIndex(this.playerIndex);
 							Server.this.connections.get(frontPlayerIndex).sendMessage("sleep");
 							Server.this.connections.get(frontPlayerIndex).character.bomb = 1;
