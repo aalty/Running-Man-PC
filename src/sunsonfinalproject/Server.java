@@ -24,7 +24,7 @@ public class Server {
 	private ConnectionThread connection;
 	private List<ConnectionThread> connections = new ArrayList<ConnectionThread>();
 	private MainApplet applet;
-	private int appletWidth = 1200, appletHeight = 820;
+	private int mainAppletWidth = 1200, mainAppletHeight = 820;
 	private static int portNum;
 	private int player=0, selectCnt=0, playerNum;
 	
@@ -58,14 +58,14 @@ public class Server {
 	public void GUI(){
 		applet = new MainApplet(this.getAddress() ,Integer.toString(portNum));
 		applet.init();
-		applet.setSize(appletWidth, appletHeight);
+		applet.setSize(mainAppletWidth, mainAppletHeight);
 		applet.start();
 		applet.setFocusable(true);
 		
 		JFrame window = new JFrame("Running man");
 		window.setContentPane(applet);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(appletWidth, appletHeight);      
+		window.setSize(mainAppletWidth, mainAppletHeight);      
 		window.setVisible(true);
 	}
 	

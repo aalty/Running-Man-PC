@@ -8,12 +8,13 @@ import processing.core.PImage;
 
 public class Character {
 
-	public float x, y, radius;
-	public int location=0, diff=0;
-	private PApplet parent;
+	private MainApplet parent;
 	private PImage img;
 	private ArrayList<Character> targets = new ArrayList<Character>();
-	private int borderOffset = 40;
+	private int rightRadius, leftRadius, enterRightCircle = 0, enterLeftCircle = 0;
+	private int borderOffset = 0;
+	public int location=0, diff=0;
+	public float x, y;
 	public int winFlag=0;
 	public int bomb=0;
 	public int set_score=0;
@@ -21,48 +22,39 @@ public class Character {
 	/*
 	 * Store these variables when instance created.
 	 */
-	public Character(PApplet parent, float x, float y, PImage image){
+	public Character(MainApplet parent, PImage image, int playerIndex){
 		this.parent = parent;
-		this.x = x;
-		this.y = y;
+		this.x = this.parent.appletLeftX;
+		this.y = this.parent.appletStartY + playerIndex * 50;
+		this.rightRadius = this.parent.appletCircleR + playerIndex * 50;
+		this.leftRadius = this.parent.appletCircleR + (3 - playerIndex) * 50;
 		this.img = image;
 	}
 	
 	public void forward(){
-		int rightX = parent.width - this.borderOffset - 100;
-		int leftX = this.borderOffset;
-		int upY = this.borderOffset;
-		int downY = parent.height - this.borderOffset;
-		int middleY = 300;
-		int startY = 500;
-		int startX = 50;
-		//win
-		if(winFlag == 2){
-			//don`t run
-		}
-		else if(rightX > this.x && this.x > leftX && this.y == startY){
-			//finish a round
+		if(winFlag == 2){} //win, don't run
+		else if(this.x < parent.appletRightX && this.y > parent.appletRightCircleCenterY){
+			//character in the below run path
 			this.x += 20;
-			System.out.println("下："+this.x + " " + this.y + " " + rightX);
+			System.out.println("下："+this.x + " " + this.y + " " + parent.appletRightX);
 		}
-		else if(rightX < this.x && this.x > leftX && this.y > middleY){
+		else if(this.x >= parent.appletRightX && this.enterRightCircle < 2){
 			this.y -= 15;
 			winFlag = 1;
-			System.out.println("下中右："+this.x + " " + this.y);
+			System.out.println("下右中："+this.x + " " + this.y);
 		}
-		else if(this.x > leftX && this.y < middleY && this.y > upY){
+		else if(this.x > parent.appletLeftX && this.y < parent.appletRightCircleCenterY && this.y > parent.appletLeftCircleCenterY){
 			this.x -= 20;
 			System.out.println("中："+this.x + " " + this.y);
 		}
-		else if(this.x < leftX && this.y > upY){
+		else if(this.x <= parent.appletLeftX && this.enterLeftCircle < 2){
 			this.y -= 15;
-			System.out.println("中中上："+this.x + " " + this.y);
+			System.out.println("中左上："+this.x + " " + this.y);
 		}
-		else if(this.x < rightX && this.y < upY){
+		else if(this.x < parent.appletRightX && this.y < parent.appletLeftCircleCenterY){
 			this.x += 20;
 			System.out.println("上："+this.x + " " + this.y);
 		}
-		
 	}
 	
 	public void end_play(){
