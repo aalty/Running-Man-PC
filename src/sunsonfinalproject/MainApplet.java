@@ -129,4 +129,5 @@ public class MainApplet extends PApplet{
 		characters.add(tmp);
 		return tmp;
 	}
+	
 }

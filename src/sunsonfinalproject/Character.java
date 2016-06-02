@@ -13,11 +13,11 @@ public class Character {
 	private PApplet parent;
 	private PImage img;
 	private ArrayList<Character> targets = new ArrayList<Character>();
-
-	public int set_score=0;
 	private int borderOffset = 0;
 	public int winFlag=0;
-	
+	public int bomb=0;
+	public int set_score=0;
+	private int angle=0;
 	
 	/*
 	 * Store these variables when instance created.
@@ -34,9 +34,10 @@ public class Character {
 		int leftX = this.borderOffset;
 		int upY = this.borderOffset;
 		int downY = parent.height - this.borderOffset;
-		int middleY = this.parent.height/2;
+		int middleY = 300;
 		int startY = 500;
 		int startX = 50;
+		int r = 50;
 		
 		
 		//win
@@ -46,9 +47,8 @@ public class Character {
 		
 		else if(this.x>=1090&&this.y<0)
 			winFlag = 2;
-		
-		else if(rightX > this.x && this.x > leftX && this.y == startY){
 
+		else if(rightX > this.x && this.x > leftX && this.y == startY){
 			//finish a round
 			/*if(winFlag == 1){
 				winFlag = 2;
@@ -58,6 +58,7 @@ public class Character {
 		}
 		else if(rightX < this.x && this.x > leftX && this.y > middleY){
 			this.y -= 15;
+
 			System.out.println("下中右："+this.x + " " + this.y);
 		}
 		else if(this.x > leftX && this.y < middleY && this.y > upY){
@@ -73,36 +74,11 @@ public class Character {
 			System.out.println("上："+this.x + " " + this.y);
 		}
 		
-		
-		
-//		else if(this.x <= leftX && this.y < downY && this.y >= middleY){
-//			this.y -= 15;
-//			winFlag = 1;
-//			System.out.println("中："+this.x + " " + this.y);
-//		}
-//		//撌�
-//		else if(this.x <= leftX && this.y > upY){
-//			this.y -= 15;
-//			System.out.println("左："+this.x + " " + this.y);
-//		}
-//		//銝�
-//		else if(this.x < rightX && this.y <= upY){
-//			this.x += 20;
-//			System.out.println("上："+this.x + " " + this.y);
-//		}
-//		//�
-//		else if(this.x >= rightX && this.y < downY){
-//			this.y += 15;
-//			winFlag = 1;
-//		}
-		
-		
 	}
 	
 	public void end_play(){
 		this.img.resize(250, 250);
 		this.parent.image(this.img, x, y);
-
 	}
 	
 	/*
@@ -110,7 +86,11 @@ public class Character {
 	 */
 	public void display(){	
 		this.img.resize(100, 100);
+		if(bomb == 1){
+			this.parent.tint(255,0,0);//red
+		}
 		this.parent.image(this.img, x, y);
+		this.parent.noTint();
 		while(diff > 0){
 			forward();
 			diff--;
