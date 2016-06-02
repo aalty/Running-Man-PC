@@ -49,7 +49,7 @@ public class Character {
 			//don`t run
 		}
 		
-		else if(this.x>=1090&&this.y<0)
+		else if(this.x>=995&&this.y==65)
 			winFlag = 2;
 
 		else if(rightX > this.x && this.x > leftX && this.y == startY){
