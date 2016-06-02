@@ -37,15 +37,15 @@ public class MainApplet extends PApplet{
 		currentGameState = gameState.WAITCONNECT;
 		characters = new ArrayList<Character>();
 		selectRects = new ArrayList<ChooseCharacter>();
-		appletLeftX = 50;
-		appletRightX = 500;
+		appletLeftX = 200;
+		appletRightX = width - 200;
 		appletCircleR = 120;
 		appletStartY = 500;
 		appletUpY = 0;
 		appletDownY = this.height;
-		appletMidY = (appletUpY + appletDownY) / 2;
-		appletLeftCircleCenterY = 100;
-		appletRightCircleCenterY = 300;
+		appletMidY = 300;
+		appletLeftCircleCenterY = 150;
+		appletRightCircleCenterY = 400;
 		
 		loadCharacters();
 		smooth();
@@ -105,10 +105,10 @@ public class MainApplet extends PApplet{
 				end_num++;
 				break;
 			}
-			if(character.winFlag==2&&character.set_score==0){
+			else if(character.winFlag==2&&character.set_score==0){
 				end_num++;
 				character.set_score=end_num;
-				System.out.println("end_num "+end_num);
+				//System.out.println(end_num "+end_num);
 			}
 		}
 	}

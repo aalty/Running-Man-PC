@@ -166,19 +166,25 @@ public class Server {
 						if(applet.end_num==applet.player_num){
 							System.out.println("----score: "+character.set_score+" ----");
 							if(character.set_score==1){
-								System.out.println("INDEX: "+this.playerIndex);
+								System.out.println("First place index: "+this.playerIndex);
 								sendMessage("one");
 							}
-							else if(character.set_score==2)
+							else if(character.set_score==2){
+								System.out.println("Second place index: "+this.playerIndex);
 								sendMessage("two");
-							else if(character.set_score==3)
+							}
+							else if(character.set_score==3){
+								System.out.println("Third place index: "+this.playerIndex);
 								sendMessage("three");
-							else if(character.set_score==4)
+							}
+							else if(character.set_score==4){
+								System.out.println("Forth place index: "+this.playerIndex);
 								sendMessage("four");
+							}
 							applet.currentGameState = gameState.END;
 						}
 						
-						if(line.equals("bomb")){
+						else if(line.equals("bomb")){
 							int frontPlayerIndex = Server.this.getFrontPlayerIndex(this.playerIndex);
 							Server.this.connections.get(frontPlayerIndex).sendMessage("sleep");
 							Server.this.connections.get(frontPlayerIndex).character.bomb = 1;
@@ -224,14 +230,14 @@ public class Server {
 	public int getFrontPlayerIndex(int playerIndex) {
 		int frontPlayerIndex = 0;
 		int currentPlayerLastShake = this.connections.get(playerIndex).getLastShake();
-		int maxDistance = 0;
+		int minDistance = 10000;
 		
 		for(int i = 0; i < this.playerNum; i++){
-			if(i != playerIndex){
+			if(i != playerIndex && this.connections.get(i).getLastShake()>this.connections.get(playerIndex).getLastShake()){
 				int otherPlayerLastShake = this.connections.get(i).getLastShake();
-				int distance = otherPlayerLastShake - currentPlayerLastShake;
-				if(distance > maxDistance){
-					maxDistance = distance;
+				//int distance = otherPlayerLastShake - currentPlayerLastShake;
+				if(otherPlayerLastShake < minDistance){
+					minDistance = otherPlayerLastShake;
 					frontPlayerIndex = i;
 				}
 			}
