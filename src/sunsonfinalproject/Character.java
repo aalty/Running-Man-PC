@@ -13,9 +13,9 @@ public class Character {
 	private PApplet parent;
 	private PImage img;
 	private ArrayList<Character> targets = new ArrayList<Character>();
-	private int borderOffset = 0;
+	private int borderOffset = 40;
 	private int winFlag=0;
-	
+	public int bomb=0;
 	
 	/*
 	 * Store these variables when instance created.
@@ -32,47 +32,41 @@ public class Character {
 		int leftX = this.borderOffset;
 		int upY = this.borderOffset;
 		int downY = parent.height - this.borderOffset;
-		int middleY = this.parent.height/2;
+		int middleY = 300;
 		int startY = 500;
-//		int startX = 50;
-		
+//		int startX = 40;
+		System.out.println("out " + this.x + " " + this.y);
 		//win
 		if(winFlag == 2){
 			//don`t run
 		}
 		//下
-		else if(rightX > this.x && this.x > leftX && this.y == startY){
+		else if(this.x < 1000 && this.y == startY){
 			//finish a round
-			if(winFlag == 1){
-				winFlag = 2;
-			}
 			this.x += 20;
-			
-			System.out.println("下："+this.x + " " + this.y + " " + rightX);
+			System.out.println("down " + this.x + " " + this.y);
 		}
 		//右
-		else if(rightX > this.x && this.x > leftX && this.y > middleY){
-			this.y -= 15;
-			winFlag = 1;
-			System.out.println("右："+this.x + " " + this.y);
+		else if(this.x == 1000 && middleY < this.y && this.y <= startY){
+			//finish a round
+			this.y -= 20;
+			System.out.println("right " + this.x + " " + this.y+ " " +middleY);
 		}
 		//中
-		else if(this.x <= leftX && this.y < downY && this.y >= middleY){
-			this.y -= 15;
-			winFlag = 1;
-			System.out.println("中："+this.x + " " + this.y);
+		else if(leftX < this.x && this.y == middleY){
+			this.x -= 20;
+			System.out.println("middle " + this.x + " " + this.y);
 		}
 		//左
-		else if(this.x <= leftX && this.y > upY){
-			this.y -= 15;
-			System.out.println("左："+this.x + " " + this.y);
+		else if(this.x == leftX && this.y == middleY){
+			this.y -= 20;
+			System.out.println("left " + this.x + " " + this.y);
 		}
-		//上
-		else if(this.x < rightX && this.y <= upY){
-			this.x += 20;
-			System.out.println("上："+this.x + " " + this.y);
+		//右
+		else if(this.x >= rightX && this.y < downY){
+			this.y += 15;
+			System.out.println("down " + this.x + " " + this.y);
 		}
-		
 	}
 	
 	/*
@@ -80,7 +74,11 @@ public class Character {
 	 */
 	public void display(){	
 		this.img.resize(100, 100);
+		if(bomb == 1){
+			this.parent.tint(255,0,0);//red
+		}
 		this.parent.image(this.img, x, y);
+		this.parent.noTint();
 		while(diff > 0){
 			forward();
 			diff--;
