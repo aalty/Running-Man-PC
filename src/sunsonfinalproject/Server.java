@@ -230,14 +230,14 @@ public class Server {
 	public int getFrontPlayerIndex(int playerIndex) {
 		int frontPlayerIndex = 0;
 		int currentPlayerLastShake = this.connections.get(playerIndex).getLastShake();
-		int maxDistance = 0;
+		int minDistance = 10000;
 		
 		for(int i = 0; i < this.playerNum; i++){
-			if(i != playerIndex){
+			if(i != playerIndex && this.connections.get(i).getLastShake()>this.connections.get(playerIndex).getLastShake()){
 				int otherPlayerLastShake = this.connections.get(i).getLastShake();
-				int distance = otherPlayerLastShake - currentPlayerLastShake;
-				if(distance > maxDistance){
-					maxDistance = distance;
+				//int distance = otherPlayerLastShake - currentPlayerLastShake;
+				if(otherPlayerLastShake < minDistance){
+					minDistance = otherPlayerLastShake;
 					frontPlayerIndex = i;
 				}
 			}
