@@ -58,10 +58,12 @@ public class ChooseCharacter {
 			}
 			else if (direction.equals("up")) {
 				int temp;
-				if(selectIndex>1)
-					temp= selectIndex - 5;
+				if(selectIndex >= 2 && selectIndex <= 4)
+					temp = selectIndex - 7;
+				else if(selectIndex >= 0 && selectIndex <= 1)
+					temp= selectIndex - 2;
 				else
-					temp= selectIndex - 3;
+					temp= selectIndex - 5;
 				temp = temp >= 0 ? temp : temp + 17;
 				setSelectIndex(temp);
 			}
@@ -72,10 +74,12 @@ public class ChooseCharacter {
 			}
 			else if (direction.equals("down")) {
 				int temp;
-				if(selectIndex>1)
-					temp= selectIndex + 5;
+				if(selectIndex >= 12 && selectIndex <= 14)
+					temp = selectIndex + 7;
+				else if(selectIndex >= 15 && selectIndex <= 16)
+					temp= selectIndex + 2;
 				else
-					temp= selectIndex + 3;
+					temp= selectIndex + 5;
 				temp = temp < 17 ? temp : temp - 17;
 				setSelectIndex(temp);
 			}

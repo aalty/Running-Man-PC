@@ -45,6 +45,7 @@ public class Server {
 		
 		GUI();
 		this.playerNum = Integer.parseInt(JOptionPane.showInputDialog("How many players?", "3"));
+		applet.player_num=this.playerNum;
 		
 		try {
 			this.serverSocket = new ServerSocket(portNum);
@@ -72,6 +73,9 @@ public class Server {
 		System.out.println("Server starts waiting for client.");
 		while(true){
 			try{
+				
+				
+				
 				if(this.connections.size() < 10){
 					Socket ToClient = this.serverSocket.accept();
 					System.out.println("Get connection from client"
@@ -88,8 +92,7 @@ public class Server {
 				if(this.connections.size() >= this.playerNum){
 					applet.currentGameState = gameState.CHOOSECHAR;
 					broadcast("start");
-				}
-						
+				}		
 				
 			}catch(BindException e){
 				e.printStackTrace();
@@ -156,6 +159,25 @@ public class Server {
 					}
 					//Play
 					else if(this.currentGameState == gameState.PLAY){
+
+						//System.out.println("player_num "+applet.player_num+" end_num "+applet.end_num);
+						System.out.println("end "+applet.end_num+" players "+applet.player_num);
+
+						if(applet.end_num==applet.player_num){
+							System.out.println("----score: "+character.set_score+" ----");
+							if(character.set_score==1){
+								System.out.println("INDEX: "+this.playerIndex);
+								sendMessage("one");
+							}
+							else if(character.set_score==2)
+								sendMessage("two");
+							else if(character.set_score==3)
+								sendMessage("three");
+							else if(character.set_score==4)
+								sendMessage("four");
+							applet.currentGameState = gameState.END;
+						}
+						
 						if(line.equals("bomb")){
 							int frontPlayerIndex = Server.this.getFrontPlayerIndex(this.playerIndex);
 							Server.this.connections.get(frontPlayerIndex).sendMessage("sleep");
@@ -166,6 +188,7 @@ public class Server {
 							character.diff = Integer.parseInt(line) - lastShake;
 							lastShake = Integer.parseInt(line);
 							sendMessage("run");					
+							System.out.println(lastShake);
 							this.character.bomb = 0;
 						}
 					}
