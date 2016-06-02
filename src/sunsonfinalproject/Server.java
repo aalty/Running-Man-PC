@@ -166,15 +166,21 @@ public class Server {
 						if(applet.end_num==applet.player_num){
 							System.out.println("----score: "+character.set_score+" ----");
 							if(character.set_score==1){
-								System.out.println("INDEX: "+this.playerIndex);
+								System.out.println("First place index: "+this.playerIndex);
 								sendMessage("one");
 							}
-							else if(character.set_score==2)
+							else if(character.set_score==2){
+								System.out.println("Second place index: "+this.playerIndex);
 								sendMessage("two");
-							else if(character.set_score==3)
+							}
+							else if(character.set_score==3){
+								System.out.println("Third place index: "+this.playerIndex);
 								sendMessage("three");
-							else if(character.set_score==4)
+							}
+							else if(character.set_score==4){
+								System.out.println("Forth place index: "+this.playerIndex);
 								sendMessage("four");
+							}
 							applet.currentGameState = gameState.END;
 						}
 						
