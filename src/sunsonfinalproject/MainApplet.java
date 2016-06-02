@@ -94,10 +94,10 @@ public class MainApplet extends PApplet{
 				end_num++;
 				break;
 			}
-			if(character.winFlag==2&&character.set_score==0){
+			else if(character.winFlag==2&&character.set_score==0){
 				end_num++;
 				character.set_score=end_num;
-				System.out.println("end_num "+end_num);
+				//System.out.println(end_num "+end_num);
 			}
 		}
 	}

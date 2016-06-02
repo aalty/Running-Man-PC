@@ -43,12 +43,20 @@ public class Character {
 		int cx = rightX;
 		int cy = (middleY+startY)/2;
 		
+		
 		//win
 		if(winFlag == 2){
 			//don`t run
 		}
+		
+		else if(this.x>=1090&&this.y<0)
+			winFlag = 2;
+
 		else if(rightX > this.x && this.x > leftX && this.y == startY){
 			//finish a round
+			/*if(winFlag == 1){
+				winFlag = 2;
+			}*/
 			this.x += 20;
 			System.out.println("下："+this.x + " " + this.y + " " + rightX);
 		}
