@@ -36,10 +36,10 @@ public class Character {
 	}
 	
 	public void forward(){
-		
 		if(winFlag == 2){} //win, don't run
 		else if(this.x < parent.appletRightX && this.y > parent.appletRightCircleCenterY && enterLeftCircle == 0){
 			//character in the below run path
+
 			this.x += 20;
 			if(this.x >= parent.appletRightX) this.x = parent.appletRightX;
 			System.out.println("下："+this.x + " " + this.y + " " + parent.appletRightX);
