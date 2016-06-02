@@ -3,6 +3,7 @@ package sunsonfinalproject;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PImage;
 
 
@@ -17,7 +18,8 @@ public class Character {
 	public int winFlag=0;
 	public int bomb=0;
 	public int set_score=0;
-	private int angle=0;
+	private float angle1=PConstants.PI/2;
+	private float angle2=PConstants.PI/2;
 	
 	/*
 	 * Store these variables when instance created.
@@ -30,14 +32,16 @@ public class Character {
 	}
 	
 	public void forward(){
-		int rightX = parent.width - this.borderOffset - 100;
-		int leftX = this.borderOffset;
+		int rightX = parent.width - this.borderOffset - 200;
+		int leftX = this.borderOffset + 200;
 		int upY = this.borderOffset;
 		int downY = parent.height - this.borderOffset;
 		int middleY = 300;
 		int startY = 500;
 		int startX = 50;
-		int r = 50;
+		int r = 120;
+		int cx = rightX;
+		int cy = (middleY+startY)/2;
 		
 		//win
 		if(winFlag == 2){
@@ -48,23 +52,31 @@ public class Character {
 			this.x += 20;
 			System.out.println("下："+this.x + " " + this.y + " " + rightX);
 		}
-		else if(rightX < this.x && this.x > leftX && this.y > middleY){
-			this.y -= 15;
-//			this.angle++;
-//			this.x = (int)(rightX-10 + r*PApplet.cos(this.angle));
-//			this.y = (int)(startY-10 + r*PApplet.sin(this.angle));
+		else if(this.x > leftX && this.y > middleY){
+			cx = rightX;
+			cy = (middleY+startY)/2;
+//			this.y -= 15;
+			this.x = (int)(cx + r*PApplet.cos(this.angle1));
+			this.y = (int)(cy + r*PApplet.sin(this.angle1));
+			this.angle1-=PConstants.PI/16;
 //			winFlag = 1;
-			System.out.println("下中右："+this.x + " " + this.y);
+			System.out.println("下中右："+this.x + " " + this.y + " " + r*PApplet.cos(this.angle1) + " " + r*PApplet.sin(this.angle1));
 		}
-		else if(this.x > leftX && this.y < middleY && this.y > upY){
+		else if(this.x > leftX && this.y == middleY){
 			this.x -= 20;
 			System.out.println("中："+this.x + " " + this.y);
 		}
-		else if(this.x < leftX && this.y > upY){
-			this.y -= 15;
-			System.out.println("中中上："+this.x + " " + this.y);
+		else if(this.x < rightX && this.y > 80){
+			cx = leftX;
+			cy = (middleY+upY)/2;
+//			this.y -= 15;
+			this.x = (int)(cx + r*PApplet.cos(this.angle2));
+			this.y = (int)(cy + r*PApplet.sin(this.angle2));
+			this.angle2+=PConstants.PI/16;
+//			winFlag = 1;
+			System.out.println("中中上："+this.x + " " + this.y + " " + r*PApplet.cos(this.angle1) + " " + r*PApplet.sin(this.angle2));
 		}
-		else if(this.x < rightX && this.y < upY){
+		else if(this.x < rightX && this.y > upY){
 			this.x += 20;
 			System.out.println("上："+this.x + " " + this.y);
 		}
