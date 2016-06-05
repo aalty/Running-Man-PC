@@ -131,6 +131,8 @@ public class Server {
 		public ConnectionThread(Socket socket, int player){
 			this.socket = socket;
 			this.playerIndex = player;
+			rect = applet.newRect();
+			rectColor = rect.getColor();			
 			try{
 				this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 				this.writer = new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream()));
@@ -143,23 +145,12 @@ public class Server {
 		public void run(){
 			while(true){
 				try{
-//					if(begin == 1){
-//						sendMessage(rectColor);
-//						sendMessage(Integer.toString(this.playerIndex+1));
-//						begin = 0;
-//					}
 					String line = this.reader.readLine();
 					System.out.println("server:"+this.playerIndex+" "+ line);
 					//Wait
 					if(this.currentGameState == gameState.WAITCONNECT){
 						if(line.equals("enter")){
-							this.currentGameState = gameState.CHOOSECHAR;
-							rect = applet.newRect();
-							rectColor = rect.getColor();							
-//							if(send_cnt >= connections.size()){
-//								applet.currentGameState = gameState.CHOOSECHAR;
-//								System.out.println("========change  \n");
-//							}
+							this.currentGameState = gameState.CHOOSECHAR;											
 							System.out.println("========" + this.playerIndex + "\n");
 						}
 					}
