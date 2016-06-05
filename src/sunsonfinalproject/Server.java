@@ -214,11 +214,12 @@ public class Server {
 							System.out.println("again: "+again_count+"set score: "+character.set_score);
 						}
 						if(again_count==applet.player_num){
+							again_count=0;
 							applet.playAgain();
 							applet.currentGameState = gameState.PLAY;
 							this.currentGameState = gameState.PLAY;
 							Server.this.broadcast("game");
-							again_count=0;
+							
 						}
 					}
 				}
