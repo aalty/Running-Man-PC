@@ -13,8 +13,13 @@ public class MainApplet extends PApplet {
 	PImage field;
 	private ArrayList<Character> characters; 
 	private ArrayList<ChooseCharacter> selectRects;
-	private PImage[] heros = new PImage[17];
+	public static PImage[] heros = new PImage[17];
+	public static PImage[] endheros = new PImage[17];
 	private GameMusicPlayer gameMusicPlayer;
+<<<<<<< HEAD
+=======
+//	private CountdownTimer countdownplayer;
+>>>>>>> 536aa5f6c38f66717b78059a26ba3472181acd06
 	private String IP, port;
 	private int rectCnt=0;
 	public gameState currentGameState;
@@ -51,6 +56,7 @@ public class MainApplet extends PApplet {
 		
 		time = millis();
 		loadCharacters();
+		loadendheros();
 		smooth();
 	}
 	
@@ -61,6 +67,12 @@ public class MainApplet extends PApplet {
 			heros[i].resize(120, 120);
 		}
 	}
+	public void loadendheros(){
+		for(int i=0; i<17; i++){
+			endheros[i] = loadImage("pic/characters" + i + ".png");
+			endheros[i].resize(250, 250);
+		}
+	}	
 	
 	public void playAgain(){
 		end_num=0;
@@ -100,6 +112,7 @@ public class MainApplet extends PApplet {
 		field = loadImage("pic/win.jpg");
 		image(field, 0, 0, width, height);
 		for(Character character : characters){
+			
 			if(character.set_score==1){character.midX=440; character.midY=200;}
 			else if(character.set_score==2){character.midX=160; character.midY=255;}
 			else if(character.set_score==3){character.midX=700; character.midY=300;}
@@ -166,11 +179,12 @@ public class MainApplet extends PApplet {
 		for(ChooseCharacter cc : selectRects){
 			cc.display();
 		}
-		
 		//draw characters for selecting
 		for(int i = 0; i < 17; i++){
 				image(heros[i],120+190*((i+3)%5),70+190*((i+3)/5));
+				
 		}
+		
 	}
 	
 	public ChooseCharacter newRect(){
@@ -182,7 +196,7 @@ public class MainApplet extends PApplet {
 	}
 	
 	public Character newCharacter(int player){
-		Character tmp = new Character(this, heros[this.selectRects.get(player).getSelectIndex()], player);
+		Character tmp = new Character(this, heros[this.selectRects.get(player).getSelectIndex()], player,this.selectRects.get(player).getSelectIndex());
 		characters.add(tmp);
 		return tmp;
 	}
