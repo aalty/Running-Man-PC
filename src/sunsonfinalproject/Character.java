@@ -33,7 +33,7 @@ public class Character {
 		this.playerIndex=playerIndex;
 		this.enterRightCircle = this.enterLeftCircle = 0;
 		this.midX = this.parent.appletLeftX - img.width;
-		this.midY = (float) (this.parent.appletFirstPathStartY + playerIndex * 40 - 0.5 * this.img.height);
+		this.midY = (float) (this.parent.appletFirstPathStartY + 3 * 40 - 0.5 * this.img.height);
 	}
 	
 	public void playAgain(){
