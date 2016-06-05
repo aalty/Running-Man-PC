@@ -24,9 +24,10 @@ public class Server {
 	private ConnectionThread connection;
 	private List<ConnectionThread> connections = new ArrayList<ConnectionThread>();
 	private MainApplet applet;
-	private int appletWidth = 1200, appletHeight = 820;
+	private int mainAppletWidth = 1200, mainAppletHeight = 820;
 	private static int portNum;
 	private int player=0, selectCnt=0, playerNum;
+	private int again_count=0;
 	
 	public Server() {
 		final CountDownLatch latch = new CountDownLatch(1);
@@ -58,15 +59,14 @@ public class Server {
 	public void GUI(){
 		applet = new MainApplet(this.getAddress() ,Integer.toString(portNum));
 		applet.init();
-		applet.setSize(appletWidth, appletHeight);
+		applet.setSize(mainAppletWidth, mainAppletHeight);
 		applet.start();
 		applet.setFocusable(true);
 		
 		JFrame window = new JFrame("Running man");
 		window.setContentPane(applet);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(appletWidth, appletHeight);
-		window.setResizable(false);
+		window.setSize(mainAppletWidth, mainAppletHeight);      
 		window.setVisible(true);
 	}
 	
@@ -123,6 +123,7 @@ public class Server {
 		private int lastShake=0, playerIndex;
 		private gameState currentGameState = gameState.WAITCONNECT;
 		public String rectColor;
+		private int bomb_num=0;
 		
 		public ConnectionThread(Socket socket, int player){
 			this.socket = socket;
@@ -140,7 +141,7 @@ public class Server {
 			while(true){
 				try{
 					String line = this.reader.readLine();
-//					System.out.println("server:"+this.playerIndex+" "+ line);
+					System.out.println("server:"+this.playerIndex+" "+ line);
 					//Wait
 					if(this.currentGameState == gameState.WAITCONNECT){
 						if(line.equals("enter")){
@@ -191,12 +192,16 @@ public class Server {
 								sendMessage("four");
 							}
 							applet.currentGameState = gameState.END;
+							this.currentGameState=gameState.END;
 						}
 						
 						else if(line.equals("bomb")){
 							int frontPlayerIndex = Server.this.getFrontPlayerIndex(this.playerIndex);
-							Server.this.connections.get(frontPlayerIndex).sendMessage("sleep");
-							Server.this.connections.get(frontPlayerIndex).character.bomb = 1;
+							if(frontPlayerIndex>=0){
+								Server.this.connections.get(frontPlayerIndex).sendMessage("sleep");
+								Server.this.connections.get(frontPlayerIndex).character.bomb = 1;
+								sendMessage("success");
+							}
 							System.out.println(frontPlayerIndex);
 						}
 						else{
@@ -205,6 +210,21 @@ public class Server {
 							sendMessage("run");					
 							System.out.println(lastShake);
 							this.character.bomb = 0;
+						}
+					}
+					else if(this.currentGameState == gameState.END){
+						System.out.println("again: "+again_count+"set score: "+character.set_score);
+						if(line.equals("again")&&character.set_score!=0){
+							again_count++;
+							character.set_score=0;
+							System.out.println("again: "+again_count+"set score: "+character.set_score);
+						}
+						if(again_count==applet.player_num){
+							applet.playAgain();
+							applet.currentGameState = gameState.PLAY;
+							this.currentGameState = gameState.PLAY;
+							Server.this.broadcast("game");
+							again_count=0;
 						}
 					}
 				}
@@ -237,20 +257,28 @@ public class Server {
 	}
 	
 	public int getFrontPlayerIndex(int playerIndex) {
-		int frontPlayerIndex = 0;
+		int frontPlayerIndex = -1;
 		int currentPlayerLastShake = this.connections.get(playerIndex).getLastShake();
-		int maxDistance = 0;
+		int minDistance = 10000;
 		
-		for(int i = 0; i < this.playerNum; i++){
-			if(i != playerIndex){
+		if(this.connections.get(playerIndex).bomb_num<2){
+			for(int i = 0; i < this.playerNum; i++){
 				int otherPlayerLastShake = this.connections.get(i).getLastShake();
-				int distance = otherPlayerLastShake - currentPlayerLastShake;
-				if(distance > maxDistance){
-					maxDistance = distance;
-					frontPlayerIndex = i;
+				if(i != playerIndex && otherPlayerLastShake>currentPlayerLastShake){
+					System.out.println("min: "+minDistance+" player: "+playerIndex+": "+currentPlayerLastShake+" i: "+i+": "+otherPlayerLastShake);
+					//int distance = otherPlayerLastShake - currentPlayerLastShake;	
+					if(otherPlayerLastShake < minDistance){
+						minDistance = otherPlayerLastShake;
+						frontPlayerIndex = i;
+					}
 				}
 			}
 		}
+		System.out.println("front: "+frontPlayerIndex);
+		
+		if(frontPlayerIndex>=0)
+			this.connections.get(playerIndex).bomb_num++;
+		
 		return frontPlayerIndex;
 	}
 	

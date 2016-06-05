@@ -9,19 +9,22 @@ enum gameState{
 }
 
 @SuppressWarnings("serial")
-public class MainApplet extends PApplet{
+public class MainApplet extends PApplet {
 	PImage field;
 	private ArrayList<Character> characters; 
 	private ArrayList<ChooseCharacter> selectRects;
-	private int startX = 300, startY = 500;
-	public gameState currentGameState;
 	private PImage[] heros = new PImage[17];
 	private GameMusicPlayer gameMusicPlayer;
-	public WaitConnect waitConnectPage;
+	private CountdownTimer countdownplayer;
 	private String IP, port;
+	private int rectCnt=0;
+	public gameState currentGameState;
+	public WaitConnect waitConnectPage;
 	public int end_num=0;
 	public int player_num=0;
-	private int rectCnt=0;
+	public int appletUpY, appletMidY, appletDownY, appletLeftCircleCenterY, appletRightCircleCenterY, 
+			   appletCircleR, appletLeftX, appletRightX, appletStartY;
+
 	
 	public MainApplet(String IP, String port){
 		this.IP= IP;
@@ -35,6 +38,15 @@ public class MainApplet extends PApplet{
 		currentGameState = gameState.WAITCONNECT;
 		characters = new ArrayList<Character>();
 		selectRects = new ArrayList<ChooseCharacter>();
+		appletLeftX = 200;
+		appletRightX = width - 200;
+		appletCircleR = 120;
+		appletStartY = 500;
+		appletUpY = 0;
+		appletDownY = this.height;
+		appletMidY = 300;
+		appletLeftCircleCenterY = 150;
+		appletRightCircleCenterY = 400;
 		
 		loadCharacters();
 		smooth();
@@ -46,6 +58,12 @@ public class MainApplet extends PApplet{
 			heros[i] = loadImage("pic/characters" + i + ".png");
 			heros[i].resize(120, 120);
 		}
+	}
+	
+	public void playAgain(){
+		end_num=0;
+		for(Character character : characters)
+			character.playAgain();
 	}
 	
 	public void draw(){
@@ -125,7 +143,7 @@ public class MainApplet extends PApplet{
 	}
 	
 	public Character newCharacter(int player){
-		Character tmp = new Character(this, startX, startY, heros[this.selectRects.get(player).getSelectIndex()]);
+		Character tmp = new Character(this, heros[this.selectRects.get(player).getSelectIndex()], player);
 		characters.add(tmp);
 		return tmp;
 	}
