@@ -22,30 +22,32 @@ public class Character {
 	private int playerIndex;
 	private float angle1=PConstants.PI * 3/2;
 	private float angle2=PConstants.PI * 3/2;
+	private int imgIndex;
 	
 	/*
 	 * Store these variables when instance created.
 	 */
-	public Character(MainApplet parent, PImage image, int playerIndex){
+	public Character(MainApplet parent, PImage image, int playerIndex,int imgIndex){
 		this.parent = parent;
 		this.img = image;
 		this.img.resize(100, 100);
 		this.playerIndex=playerIndex;
+		this.imgIndex = imgIndex;
 		this.enterRightCircle = this.enterLeftCircle = 0;
 		this.midX = this.parent.appletLeftX - img.width;
-		this.midY = (float) (this.parent.appletFirstPathStartY + 3 * 40 - 0.5 * this.img.height);
+		this.midY = (float) (this.parent.appletFirstPathStartY + this.playerIndex * 40 - 0.5 * this.img.height);
 	}
 	
 	public void playAgain(){
 		
-		this.enterRightCircle = this.enterLeftCircle = 0;
 		this.winFlag=0;
 		this.bomb=0;
 		this.set_score=0;
+		this.img.resize(100, 100);
 		this.angle1=PConstants.PI*3/2;
 		this.angle2=PConstants.PI*3/2;
-		
-		 
+		this.midX = this.parent.appletLeftX - img.width;
+		this.midY = (float) (this.parent.appletFirstPathStartY + playerIndex * 40 - 0.5 * this.img.height);
 		this.enterRightCircle = this.enterLeftCircle = 0;
 	}
 	
@@ -109,30 +111,23 @@ public class Character {
 			System.out.println("上：" + (this.midX - img.width/2)  + " " + (this.midY - img.height/2));
 		}
 		else if(enterLeftCircle == 2 && this.midX >= parent.appletRightX){
-			this.midX = this.parent.appletLeftX - img.width;
-			this.midY = (float) (this.parent.appletFirstPathStartY - 0.5 * this.img.height); 
-			this.enterLeftCircle = this.enterRightCircle = 0;
-			this.angle1 = this.angle2 = PConstants.PI * 3 /2;
-			//winFlag = 2;
+			winFlag = 2;
 		}
 		else{
 			System.out.println("沒跑道：" + (this.midX - img.width/2)  + " " + (this.midY - img.height/2));
 		}
 	}
 	
-	private double getAngle(){
-		double angle, sinValue;
-		sinValue = this.img.height / this.rightRadius; 
-		angle = Math.asin(sinValue);
-		System.out.println(angle / PConstants.PI);
-		return angle;
-	}
-	
 	public void end_play(){
-		this.img.resize(250, 250);
-		this.parent.image(this.img, midX - img.width/2, midY - img.height/2);
+		this.img= MainApplet.endheros[this.imgIndex];
+		//this.img.resize(250, 250);
+		
+		//this.parent.image(this.img, midX - img.width/4, midY - img.height/4);
+		this.parent.image(this.img, midX, midY);
 	}
 	
+	
+
 	/*
 	 * Use display() to draw the character on the sketch.
 	 */

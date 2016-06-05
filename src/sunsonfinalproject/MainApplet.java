@@ -13,9 +13,10 @@ public class MainApplet extends PApplet {
 	PImage field;
 	private ArrayList<Character> characters; 
 	private ArrayList<ChooseCharacter> selectRects;
-	private PImage[] heros = new PImage[17];
+	public static PImage[] heros = new PImage[17];
+	public static PImage[] endheros = new PImage[17];
 	private GameMusicPlayer gameMusicPlayer;
-	private CountdownTimer countdownplayer;
+
 	private String IP, port;
 	private int rectCnt=0;
 	public gameState currentGameState;
@@ -24,6 +25,7 @@ public class MainApplet extends PApplet {
 	public int player_num=0;
 	public int appletUpY, appletMidY, appletDownY, appletLeftCircleCenterY, appletRightCircleCenterY, 
 			   appletCircleR, appletLeftX, appletRightX, appletFirstPathStartY;
+	private int time = millis(), wait = 10000, tick = 0;
 
 	
 	public MainApplet(String IP, String port){
@@ -33,6 +35,7 @@ public class MainApplet extends PApplet {
 
 	public void setup(){
 		//initialize
+		
 		waitConnectPage = new WaitConnect(this, this.IP, this.port);
 		gameMusicPlayer = new GameMusicPlayer();
 		currentGameState = gameState.WAITCONNECT;
@@ -48,8 +51,9 @@ public class MainApplet extends PApplet {
 		appletMidY = 300;
 		appletCircleR = 120;
 		
-		
+		time = millis();
 		loadCharacters();
+		loadendheros();
 		smooth();
 	}
 	
@@ -60,6 +64,12 @@ public class MainApplet extends PApplet {
 			heros[i].resize(120, 120);
 		}
 	}
+	public void loadendheros(){
+		for(int i=0; i<17; i++){
+			endheros[i] = loadImage("pic/characters" + i + ".png");
+			endheros[i].resize(250, 250);
+		}
+	}	
 	
 	public void playAgain(){
 		end_num=0;
@@ -68,6 +78,7 @@ public class MainApplet extends PApplet {
 	}
 	
 	public void draw(){
+		
 		background(255);
 		//Wait page
 		if(currentGameState == gameState.WAITCONNECT){
@@ -86,12 +97,19 @@ public class MainApplet extends PApplet {
 		else if(currentGameState == gameState.END){
 			endPage();
 		}
+		
+		
+		
+//		textSize(45);
+//		text("BULLSHIT", 550, 410);
+//		fill(0);
 	}
 	
 	public void endPage(){
 		field = loadImage("pic/win.jpg");
 		image(field, 0, 0, width, height);
 		for(Character character : characters){
+			
 			if(character.set_score==1){character.midX=440; character.midY=200;}
 			else if(character.set_score==2){character.midX=160; character.midY=255;}
 			else if(character.set_score==3){character.midX=700; character.midY=300;}
@@ -119,6 +137,36 @@ public class MainApplet extends PApplet {
 				//System.out.println(end_num "+end_num);
 			}
 		}
+		
+		if(millis() - time >= wait){
+			tick ++;
+			time = millis();
+		}
+		
+		if(tick > 0){
+			
+			textSize(300);
+			fill(255);
+			if(tick == 1){
+				text("3", 550, 400);
+				wait=1000;
+			}
+			else if(tick == 2) {
+				text("2", 550, 400);
+				wait=1000;
+			}
+			else if(tick == 3) {
+				text("1", 550, 400);
+				wait=1000;
+			}
+			else if(tick == 4) {
+				text("start!",250,400);
+				wait=1000;
+			}
+		}
+		
+		
+		
 	}
 	
 	public void chooseCharactersPage(){
@@ -128,11 +176,12 @@ public class MainApplet extends PApplet {
 		for(ChooseCharacter cc : selectRects){
 			cc.display();
 		}
-		
 		//draw characters for selecting
 		for(int i = 0; i < 17; i++){
 				image(heros[i],120+190*((i+3)%5),70+190*((i+3)/5));
+				
 		}
+		
 	}
 	
 	public ChooseCharacter newRect(){
@@ -144,7 +193,7 @@ public class MainApplet extends PApplet {
 	}
 	
 	public Character newCharacter(int player){
-		Character tmp = new Character(this, heros[this.selectRects.get(player).getSelectIndex()], player);
+		Character tmp = new Character(this, heros[this.selectRects.get(player).getSelectIndex()], player,this.selectRects.get(player).getSelectIndex());
 		characters.add(tmp);
 		return tmp;
 	}
