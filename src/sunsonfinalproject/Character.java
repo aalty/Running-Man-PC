@@ -40,8 +40,8 @@ public class Character {
 	public void playAgain(){
 		this.x = this.parent.appletLeftX;
 		this.y = this.parent.appletStartY + playerIndex * 50;
-		//this.rightRadius = this.parent.appletCircleR + playerIndex * 50;
-		//this.leftRadius = this.parent.appletCircleR + (3 - playerIndex) * 50;
+		this.rightRadius = this.parent.appletCircleR + playerIndex * 50;
+		this.leftRadius = this.parent.appletCircleR + (3 - playerIndex) * 50;
 		this.enterRightCircle = this.enterLeftCircle = 0;
 		this.winFlag=0;
 		this.bomb=0;
