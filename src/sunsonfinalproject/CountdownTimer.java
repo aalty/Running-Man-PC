@@ -1,7 +1,5 @@
 package sunsonfinalproject;
-import java.awt.Color;
 import java.awt.Container; 
-import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.Timer;
@@ -15,22 +13,24 @@ import java.awt.event.ActionListener;
 import javax.swing.JTextField; 
 
 public class CountdownTimer extends javax.swing.JFrame implements ActionListener {
+	
 	private Container container; 
 	private JButton btn; 
-	private JTextField jtfTime; 
+	private JTextField jtfTime,jfa; 
 	private Timer tmr; 
     
-	public CountdownTimer() { 
+	public  CountdownTimer(){ 
 		initComponents(); 
 		Timer tmr; 
 		tmr = new Timer(1000,this); 
 		this.tmr = tmr; 
+	 
 		setVisible(true); 
 		} 
 	private void initComponents(){ 
 		
 	   
-		
+		jfa = new JTextField("4");
 		jtfTime = new JTextField("3"); 
 		jtfTime.setHorizontalAlignment(JTextField.CENTER);
 		btn = new JButton("倒數"); 
@@ -43,7 +43,7 @@ public class CountdownTimer extends javax.swing.JFrame implements ActionListener
 		container = getContentPane(); 
 		JPanel panel = new JPanel();
 		jtfTime.setBorder(new EmptyBorder(0,0,0,0));
-		panel.add(btn); 
+		//panel.add(btn); 
 		panel.add(jtfTime); 
 	
 		panel.setLayout(null); 
@@ -57,38 +57,34 @@ public class CountdownTimer extends javax.swing.JFrame implements ActionListener
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
+		int t, a;
 		// TODO Auto-generated method stub
-	
-		if(ae.getSource() == btn){ 
-			jtfTime.setText("3");
-			
+		if(ae.getSource() == gameState.PLAY){ 
+			jfa.setText("5"); 
+			jtfTime.setText("3"); 
 			tmr.start(); 
-			}
-		else { 
-			int t; 
-
-			t = Integer.parseInt(jtfTime.getText()); 
-			t--; 
-			jtfTime.setText(""+t); 
-			if (t<1){
+			
+			}else { 
 				 
-				jtfTime.setText("start!");
-				System.out.println("時間到");
-				tmr.stop(); 
 				
-				
-				jtfTime.setVisible(false); 
-				
+				t = Integer.parseInt(jtfTime.getText()); 
+				a = Integer.parseInt(jfa.getText());
+				a--;
+				t--; 
+				jfa.setText(""+a);
+				jtfTime.setText(""+t); 
+				System.out.println(""+a);
+				 if(t<=0){
+					 tmr.stop();
+					 jtfTime.setVisible(false); 
+				 }
 			}
-		
 		}
+
+		
+		
 			
 		
-	}
-	public static void main(String[] args) { 
-		// TODO 自動產生方法 Stub 
-		new CountdownTimer(); 
-
-		} 
+	
 
 }

@@ -9,12 +9,13 @@ enum gameState{
 }
 
 @SuppressWarnings("serial")
-public class MainApplet extends PApplet{
+public class MainApplet extends PApplet {
 	PImage field;
 	private ArrayList<Character> characters; 
 	private ArrayList<ChooseCharacter> selectRects;
 	private PImage[] heros = new PImage[17];
 	private GameMusicPlayer gameMusicPlayer;
+	private CountdownTimer countdownplayer;
 	private String IP, port;
 	private int rectCnt=0;
 	public gameState currentGameState;
@@ -34,6 +35,7 @@ public class MainApplet extends PApplet{
 		//initialize
 		waitConnectPage = new WaitConnect(this, this.IP, this.port);
 		gameMusicPlayer = new GameMusicPlayer();
+		countdownplayer = new CountdownTimer();
 		currentGameState = gameState.WAITCONNECT;
 		characters = new ArrayList<Character>();
 		selectRects = new ArrayList<ChooseCharacter>();
