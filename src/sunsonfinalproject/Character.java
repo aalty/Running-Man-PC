@@ -22,18 +22,20 @@ public class Character {
 	private int playerIndex;
 	private float angle1=PConstants.PI * 3/2;
 	private float angle2=PConstants.PI * 3/2;
+	private int imgIndex;
 	
 	/*
 	 * Store these variables when instance created.
 	 */
-	public Character(MainApplet parent, PImage image, int playerIndex){
+	public Character(MainApplet parent, PImage image, int playerIndex,int imgIndex){
 		this.parent = parent;
 		this.img = image;
 		this.img.resize(100, 100);
 		this.playerIndex=playerIndex;
+		this.imgIndex = imgIndex;
 		this.enterRightCircle = this.enterLeftCircle = 0;
 		this.midX = this.parent.appletLeftX - img.width;
-		this.midY = (float) (this.parent.appletFirstPathStartY + 3 * 40 - 0.5 * this.img.height);
+		this.midY = (float) (this.parent.appletFirstPathStartY + this.playerIndex * 40 - 0.5 * this.img.height);
 	}
 	
 	public void playAgain(){
@@ -129,11 +131,15 @@ public class Character {
 	}
 	
 	public void end_play(){
-		this.img.resize(250, 250);
+		this.img= MainApplet.endheros[this.imgIndex];
+		//this.img.resize(250, 250);
+		
 		//this.parent.image(this.img, midX - img.width/4, midY - img.height/4);
 		this.parent.image(this.img, midX, midY);
 	}
 	
+	
+
 	/*
 	 * Use display() to draw the character on the sketch.
 	 */
