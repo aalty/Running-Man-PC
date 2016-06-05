@@ -21,6 +21,7 @@ public class Character {
 	public int set_score=0;
 	private float angle1=PConstants.PI/2;
 	private float angle2=PConstants.PI/2;
+	private int playerIndex;
 	
 	/*
 	 * Store these variables when instance created.
@@ -33,6 +34,20 @@ public class Character {
 		this.leftRadius = this.parent.appletCircleR + (3 - playerIndex) * 50;
 		this.enterRightCircle = this.enterLeftCircle = 0;
 		this.img = image;
+		this.playerIndex=playerIndex;
+	}
+	
+	public void playAgain(){
+		this.x = this.parent.appletLeftX;
+		this.y = this.parent.appletStartY + playerIndex * 50;
+		//this.rightRadius = this.parent.appletCircleR + playerIndex * 50;
+		//this.leftRadius = this.parent.appletCircleR + (3 - playerIndex) * 50;
+		this.enterRightCircle = this.enterLeftCircle = 0;
+		this.winFlag=0;
+		this.bomb=0;
+		this.set_score=0;
+		this.angle1=PConstants.PI*3/2;
+		this.angle2=PConstants.PI*3/2;
 	}
 	
 	public void forward(){

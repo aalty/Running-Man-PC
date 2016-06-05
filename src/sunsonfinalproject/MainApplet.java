@@ -60,6 +60,12 @@ public class MainApplet extends PApplet {
 		}
 	}
 	
+	public void playAgain(){
+		end_num=0;
+		for(Character character : characters)
+			character.playAgain();
+	}
+	
 	public void draw(){
 		background(255);
 		//Wait page

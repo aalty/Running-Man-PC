@@ -27,6 +27,7 @@ public class Server {
 	private int mainAppletWidth = 1200, mainAppletHeight = 820;
 	private static int portNum;
 	private int player=0, selectCnt=0, playerNum;
+	private int again_count=0;
 	
 	public Server() {
 		final CountDownLatch latch = new CountDownLatch(1);
@@ -119,6 +120,7 @@ public class Server {
 		private gameState currentGameState = gameState.WAITCONNECT;
 		private int bomb_num=0;
 		
+		
 		public ConnectionThread(Socket socket, int player){
 			this.socket = socket;
 			this.playerIndex = player;
@@ -183,6 +185,7 @@ public class Server {
 								sendMessage("four");
 							}
 							applet.currentGameState = gameState.END;
+							this.currentGameState=gameState.END;
 						}
 						
 						else if(line.equals("bomb")){
@@ -200,6 +203,21 @@ public class Server {
 							sendMessage("run");					
 							System.out.println(lastShake);
 							this.character.bomb = 0;
+						}
+					}
+					else if(this.currentGameState == gameState.END){
+						System.out.println("again: "+again_count+"set score: "+character.set_score);
+						if(line.equals("again")&&character.set_score!=0){
+							again_count++;
+							character.set_score=0;
+							System.out.println("again: "+again_count+"set score: "+character.set_score);
+						}
+						if(again_count==applet.player_num){
+							applet.playAgain();
+							applet.currentGameState = gameState.PLAY;
+							this.currentGameState = gameState.PLAY;
+							Server.this.broadcast("game");
+							again_count=0;
 						}
 					}
 				}
