@@ -78,7 +78,7 @@ public class Character {
 			this.x += 20;
 			System.out.println("上："+this.x + " " + this.y);
 		}
-		else if(enterLeftCircle == 2 && this.x > parent.appletRightX){
+		else if(enterLeftCircle == 2 && this.x >= parent.appletRightX){
 			winFlag = 2;
 		}
 	}
