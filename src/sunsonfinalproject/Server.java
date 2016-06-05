@@ -27,7 +27,7 @@ public class Server {
 	private int mainAppletWidth = 1200, mainAppletHeight = 820;
 	private static int portNum;
 	private int player=0, selectCnt=0, playerNum;
-	private int again_count=0;
+	private int again_count=0, send_cnt=0;;
 	
 	public Server() {
 		final CountDownLatch latch = new CountDownLatch(1);
@@ -95,9 +95,10 @@ public class Server {
 					applet.currentGameState = gameState.CHOOSECHAR;
 					broadcast("start");
 					
-//					for (ConnectionThread connection: connections) {
-//						connection.sendMessage(connection.rectColor);
-//					}
+					for (ConnectionThread connection: connections) {
+						connection.sendMessage(connection.rectColor);
+						connection.sendMessage(Integer.toString(connection.playerIndex+1));
+					}
 				}		
 				
 			}catch(BindException e){
@@ -125,6 +126,7 @@ public class Server {
 		private gameState currentGameState = gameState.WAITCONNECT;
 		public String rectColor;
 		private int bomb_num=0;
+		public int begin=0;
 		
 		public ConnectionThread(Socket socket, int player){
 			this.socket = socket;
@@ -141,16 +143,24 @@ public class Server {
 		public void run(){
 			while(true){
 				try{
+//					if(begin == 1){
+//						sendMessage(rectColor);
+//						sendMessage(Integer.toString(this.playerIndex+1));
+//						begin = 0;
+//					}
 					String line = this.reader.readLine();
-					//System.out.println("server:"+this.playerIndex+" "+ line);
+					System.out.println("server:"+this.playerIndex+" "+ line);
 					//Wait
 					if(this.currentGameState == gameState.WAITCONNECT){
 						if(line.equals("enter")){
 							this.currentGameState = gameState.CHOOSECHAR;
 							rect = applet.newRect();
-							rectColor = rect.getColor();
-							sendMessage(rectColor);
-							sendMessage(Integer.toString(this.playerIndex+1));
+							rectColor = rect.getColor();							
+//							if(send_cnt >= connections.size()){
+//								applet.currentGameState = gameState.CHOOSECHAR;
+//								System.out.println("========change  \n");
+//							}
+							System.out.println("========" + this.playerIndex + "\n");
 						}
 					}
 					//Choose characters
