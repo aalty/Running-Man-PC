@@ -15,7 +15,6 @@ public class MainApplet extends PApplet {
 	private ArrayList<ChooseCharacter> selectRects;
 	private PImage[] heros = new PImage[17];
 	private GameMusicPlayer gameMusicPlayer;
-	private CountdownTimer countdownplayer;
 	private String IP, port;
 	private int rectCnt=0;
 	public gameState currentGameState;
@@ -24,6 +23,7 @@ public class MainApplet extends PApplet {
 	public int player_num=0;
 	public int appletUpY, appletMidY, appletDownY, appletLeftCircleCenterY, appletRightCircleCenterY, 
 			   appletCircleR, appletLeftX, appletRightX, appletFirstPathStartY;
+	private int time = millis(), wait = 10000, tick = 0;
 
 	
 	public MainApplet(String IP, String port){
@@ -33,6 +33,7 @@ public class MainApplet extends PApplet {
 
 	public void setup(){
 		//initialize
+		
 		waitConnectPage = new WaitConnect(this, this.IP, this.port);
 		gameMusicPlayer = new GameMusicPlayer();
 		currentGameState = gameState.WAITCONNECT;
@@ -48,7 +49,7 @@ public class MainApplet extends PApplet {
 		appletMidY = 300;
 		appletCircleR = 120;
 		
-		
+		time = millis();
 		loadCharacters();
 		smooth();
 	}
@@ -68,6 +69,7 @@ public class MainApplet extends PApplet {
 	}
 	
 	public void draw(){
+		
 		background(255);
 		//Wait page
 		if(currentGameState == gameState.WAITCONNECT){
@@ -86,6 +88,12 @@ public class MainApplet extends PApplet {
 		else if(currentGameState == gameState.END){
 			endPage();
 		}
+		
+		
+		
+//		textSize(45);
+//		text("BULLSHIT", 550, 410);
+//		fill(0);
 	}
 	
 	public void endPage(){
@@ -119,6 +127,36 @@ public class MainApplet extends PApplet {
 				//System.out.println(end_num "+end_num);
 			}
 		}
+		
+		if(millis() - time >= wait){
+			tick ++;
+			time = millis();
+		}
+		
+		if(tick > 0){
+			
+			textSize(300);
+			fill(255);
+			if(tick == 1){
+				text("3", 550, 400);
+				wait=1000;
+			}
+			else if(tick == 2) {
+				text("2", 550, 400);
+				wait=1000;
+			}
+			else if(tick == 3) {
+				text("1", 550, 400);
+				wait=1000;
+			}
+			else if(tick == 4) {
+				text("start!",250,400);
+				wait=1000;
+			}
+		}
+		
+		
+		
 	}
 	
 	public void chooseCharactersPage(){
