@@ -108,4 +108,24 @@ public class ChooseCharacter {
 	public int getSelectIndex(){
 		return this.selectIndex;
 	}
+	
+	public String getColor(){
+//		if(player == 0){
+//			//red
+//			return "#FF0000";
+//		}
+//		else if(player == 1){
+//			//green
+//			return "#00FF00";
+//		}
+//		else if(player == 2){
+//			//blue
+//			return "#0000FF";
+//		}
+//		else if(player == 3){
+//			//cyan
+//			return "#00FFFF";
+//		}
+		return String.format("#%02X%02X%02X", this.rectColor[0], this.rectColor[1], this.rectColor[2]);
+	}
 }

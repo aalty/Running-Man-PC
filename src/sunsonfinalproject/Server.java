@@ -65,7 +65,8 @@ public class Server {
 		JFrame window = new JFrame("Running man");
 		window.setContentPane(applet);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(appletWidth, appletHeight);      
+		window.setSize(appletWidth, appletHeight);
+		window.setResizable(false);
 		window.setVisible(true);
 	}
 	
@@ -92,6 +93,10 @@ public class Server {
 				if(this.connections.size() >= this.playerNum){
 					applet.currentGameState = gameState.CHOOSECHAR;
 					broadcast("start");
+					
+//					for (ConnectionThread connection: connections) {
+//						connection.sendMessage(connection.rectColor);
+//					}
 				}		
 				
 			}catch(BindException e){
@@ -117,6 +122,7 @@ public class Server {
 		public ChooseCharacter rect;
 		private int lastShake=0, playerIndex;
 		private gameState currentGameState = gameState.WAITCONNECT;
+		public String rectColor;
 		
 		public ConnectionThread(Socket socket, int player){
 			this.socket = socket;
@@ -140,6 +146,9 @@ public class Server {
 						if(line.equals("enter")){
 							this.currentGameState = gameState.CHOOSECHAR;
 							rect = applet.newRect();
+							rectColor = rect.getColor();
+							sendMessage(rectColor);
+							sendMessage(Integer.toString(this.playerIndex+1));
 						}
 					}
 					//Choose characters
