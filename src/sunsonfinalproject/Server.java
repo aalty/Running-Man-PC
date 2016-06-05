@@ -66,7 +66,8 @@ public class Server {
 		JFrame window = new JFrame("Running man");
 		window.setContentPane(applet);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(mainAppletWidth, mainAppletHeight);      
+		window.setSize(mainAppletWidth, mainAppletHeight);  
+		window.setResizable(false);
 		window.setVisible(true);
 	}
 	
@@ -141,7 +142,7 @@ public class Server {
 			while(true){
 				try{
 					String line = this.reader.readLine();
-					System.out.println("server:"+this.playerIndex+" "+ line);
+					//System.out.println("server:"+this.playerIndex+" "+ line);
 					//Wait
 					if(this.currentGameState == gameState.WAITCONNECT){
 						if(line.equals("enter")){
@@ -171,12 +172,12 @@ public class Server {
 					else if(this.currentGameState == gameState.PLAY){
 
 						//System.out.println("player_num "+applet.player_num+" end_num "+applet.end_num);
-						System.out.println("end "+applet.end_num+" players "+applet.player_num);
+						//System.out.println("end "+applet.end_num+" players "+applet.player_num);
 
 						if(applet.end_num==applet.player_num){
 							System.out.println("----score: "+character.set_score+" ----");
 							if(character.set_score==1){
-								System.out.println("First place index: "+this.playerIndex);
+								//System.out.println("First place index: "+this.playerIndex);
 								sendMessage("one");
 							}
 							else if(character.set_score==2){

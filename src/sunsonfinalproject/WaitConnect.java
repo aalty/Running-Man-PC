@@ -47,7 +47,7 @@ public class WaitConnect {
 		*/
 		
 		//Word part
-		int space = 100;
+		int space = 50;
 		int x = this.parent.width/2;
 		int i=0;
 		this.parent.textFont(font, 45);

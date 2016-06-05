@@ -23,7 +23,7 @@ public class MainApplet extends PApplet {
 	public int end_num=0;
 	public int player_num=0;
 	public int appletUpY, appletMidY, appletDownY, appletLeftCircleCenterY, appletRightCircleCenterY, 
-			   appletCircleR, appletLeftX, appletRightX, appletStartY;
+			   appletCircleR, appletLeftX, appletRightX, appletFirstPathStartY;
 
 	
 	public MainApplet(String IP, String port){
@@ -38,15 +38,16 @@ public class MainApplet extends PApplet {
 		currentGameState = gameState.WAITCONNECT;
 		characters = new ArrayList<Character>();
 		selectRects = new ArrayList<ChooseCharacter>();
-		appletLeftX = 200;
-		appletRightX = width - 200;
-		appletCircleR = 120;
-		appletStartY = 500;
+		appletLeftX = 280;
+		appletRightX = 904;
+		appletLeftCircleCenterY = 234;
+		appletRightCircleCenterY = 517;
+		appletFirstPathStartY = 650;
 		appletUpY = 0;
 		appletDownY = this.height;
 		appletMidY = 300;
-		appletLeftCircleCenterY = 150;
-		appletRightCircleCenterY = 400;
+		appletCircleR = 120;
+		
 		
 		loadCharacters();
 		smooth();
@@ -91,10 +92,10 @@ public class MainApplet extends PApplet {
 		field = loadImage("pic/win.jpg");
 		image(field, 0, 0, width, height);
 		for(Character character : characters){
-			if(character.set_score==1){character.x=440; character.y=200;}
-			else if(character.set_score==2){character.x=160; character.y=255;}
-			else if(character.set_score==3){character.x=700; character.y=300;}
-			else if(character.set_score==4){character.x=950; character.y=440;}
+			if(character.set_score==1){character.midX=440; character.midY=200;}
+			else if(character.set_score==2){character.midX=160; character.midY=255;}
+			else if(character.set_score==3){character.midX=700; character.midY=300;}
+			else if(character.set_score==4){character.midX=950; character.midY=440;}
 			character.end_play();
 		}
 	}
