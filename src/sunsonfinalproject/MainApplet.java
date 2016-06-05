@@ -16,10 +16,7 @@ public class MainApplet extends PApplet {
 	public static PImage[] heros = new PImage[17];
 	public static PImage[] endheros = new PImage[17];
 	private GameMusicPlayer gameMusicPlayer;
-<<<<<<< HEAD
-=======
-//	private CountdownTimer countdownplayer;
->>>>>>> 536aa5f6c38f66717b78059a26ba3472181acd06
+
 	private String IP, port;
 	private int rectCnt=0;
 	public gameState currentGameState;
