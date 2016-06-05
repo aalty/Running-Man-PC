@@ -38,14 +38,14 @@ public class Character {
 	
 	public void playAgain(){
 		
-		this.enterRightCircle = this.enterLeftCircle = 0;
 		this.winFlag=0;
 		this.bomb=0;
 		this.set_score=0;
+		this.img.resize(100, 100);
 		this.angle1=PConstants.PI*3/2;
 		this.angle2=PConstants.PI*3/2;
-		
-		 
+		this.midX = this.parent.appletLeftX - img.width;
+		this.midY = (float) (this.parent.appletFirstPathStartY + playerIndex * 40 - 0.5 * this.img.height);
 		this.enterRightCircle = this.enterLeftCircle = 0;
 	}
 	
@@ -113,7 +113,7 @@ public class Character {
 			this.midY = (float) (this.parent.appletFirstPathStartY - 0.5 * this.img.height); 
 			this.enterLeftCircle = this.enterRightCircle = 0;
 			this.angle1 = this.angle2 = PConstants.PI * 3 /2;
-			//winFlag = 2;
+			winFlag = 2;
 		}
 		else{
 			System.out.println("沒跑道：" + (this.midX - img.width/2)  + " " + (this.midY - img.height/2));
@@ -130,7 +130,8 @@ public class Character {
 	
 	public void end_play(){
 		this.img.resize(250, 250);
-		this.parent.image(this.img, midX - img.width/2, midY - img.height/2);
+		//this.parent.image(this.img, midX - img.width/4, midY - img.height/4);
+		this.parent.image(this.img, midX, midY);
 	}
 	
 	/*
