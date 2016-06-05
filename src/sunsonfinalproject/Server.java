@@ -208,18 +208,9 @@ public class Server {
 					}
 					else if(this.currentGameState == gameState.END){
 						System.out.println("again: "+again_count+"set score: "+character.set_score);
-						if(line.equals("again")&&character.set_score!=0){
-							again_count++;
-							character.set_score=0;
-							System.out.println("again: "+again_count+"set score: "+character.set_score);
-						}
-						if(again_count==applet.player_num){
-							again_count=0;
-							applet.playAgain();
-							applet.currentGameState = gameState.PLAY;
-							this.currentGameState = gameState.PLAY;
-							Server.this.broadcast("game");
-							
+						if(line.equals("again")){
+							applet.currentGameState = gameState.CHOOSECHAR;
+							this.currentGameState = gameState.CHOOSECHAR;
 						}
 					}
 				}
