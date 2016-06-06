@@ -106,6 +106,7 @@ public class MainApplet extends PApplet {
 	}
 	
 	public void endPage(){
+		loadendheros();
 		field = loadImage("pic/win.jpg");
 		image(field, 0, 0, width, height);
 		for(Character character : characters){
@@ -114,6 +115,7 @@ public class MainApplet extends PApplet {
 			else if(character.set_score==2){character.midX=160; character.midY=255;}
 			else if(character.set_score==3){character.midX=700; character.midY=300;}
 			else if(character.set_score==4){character.midX=950; character.midY=440;}
+//			character.end = true;
 			character.end_play();
 		}
 	}

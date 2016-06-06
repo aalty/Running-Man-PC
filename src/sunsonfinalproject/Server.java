@@ -27,7 +27,7 @@ public class Server {
 	private int mainAppletWidth = 1200, mainAppletHeight = 820;
 	private static int portNum;
 	private int player=0, selectCnt=0, playerNum;
-	private int again_count=0, send_cnt=0;;
+	private int again_count=0, restart=0;
 	
 	public Server() {
 		final CountDownLatch latch = new CountDownLatch(1);
@@ -75,8 +75,6 @@ public class Server {
 		System.out.println("Server starts waiting for client.");
 		while(true){
 			try{
-				
-				
 				
 				if(this.connections.size() < 10){
 					Socket ToClient = this.serverSocket.accept();
@@ -178,7 +176,7 @@ public class Server {
 						if(applet.end_num==applet.player_num){
 							System.out.println("----score: "+character.set_score+" ----");
 							if(character.set_score==1){
-								//System.out.println("First place index: "+this.playerIndex);
+								System.out.println("First place index: "+this.playerIndex);
 								sendMessage("one");
 							}
 							else if(character.set_score==2){
@@ -214,12 +212,24 @@ public class Server {
 							this.character.bomb = 0;
 						}
 					}
+					//End
 					else if(this.currentGameState == gameState.END){
 						System.out.println("again: "+again_count+"set score: "+character.set_score);
 						if(line.equals("again")){
-							applet.currentGameState = gameState.CHOOSECHAR;
-							this.currentGameState = gameState.CHOOSECHAR;
-						}
+//							applet.currentGameState = gameState.PLAY;
+//							applet.playAgain();
+							this.currentGameState = gameState.PLAY;							
+							restart++;
+							applet.end_num = 0;
+							System.out.println(playerIndex + "restart");
+							if(restart == connections.size()){
+								restart = 0;
+								broadcast("game");
+								applet.currentGameState = gameState.PLAY;
+								applet.playAgain();
+								System.out.println("send game");
+							}
+						}						
 					}
 				}
 				catch(IOException e){

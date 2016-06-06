@@ -23,6 +23,7 @@ public class Character {
 	private float angle1=PConstants.PI * 3/2;
 	private float angle2=PConstants.PI * 3/2;
 	private int imgIndex;
+	public boolean end=false;
 	
 	/*
 	 * Store these variables when instance created.
@@ -43,12 +44,14 @@ public class Character {
 		this.winFlag=0;
 		this.bomb=0;
 		this.set_score=0;
+		this.img = MainApplet.heros[this.imgIndex];
 		this.img.resize(100, 100);
 		this.angle1=PConstants.PI*3/2;
 		this.angle2=PConstants.PI*3/2;
 		this.midX = this.parent.appletLeftX - img.width;
 		this.midY = (float) (this.parent.appletFirstPathStartY + playerIndex * 40 - 0.5 * this.img.height);
 		this.enterRightCircle = this.enterLeftCircle = 0;
+		this.end = false;
 	}
 	
 	public void forward(){
@@ -60,6 +63,7 @@ public class Character {
 			System.out.println("下："+ this.midX + " " + this.midY);
 		}
 		else if(this.midX >= parent.appletRightX && this.enterRightCircle < 2){
+			winFlag = 2;
 			if(enterRightCircle == 0){
 				this.rightRadius = (float) (this.midY - parent.appletRightCircleCenterY);
 				enterRightCircle ++;
@@ -131,14 +135,19 @@ public class Character {
 	/*
 	 * Use display() to draw the character on the sketch.
 	 */
-	public void display(){	
-		this.img.resize(100, 100);
+	public void display(){			
 		if(bomb == 1){
 			this.parent.tint(255,0,0);//red
 		}
 		//System.out.println("Display Char: " + x + " " + headY);
 		//this.parent.image(this.img, midX, midY);
-		this.parent.image(this.img, midX - img.width/2, midY - img.height/2);
+//		if(!end){
+			this.img.resize(100, 100);
+			this.parent.image(this.img, midX - img.width/2, midY - img.height/2);
+//		}
+//		else{
+//			end_play();
+//		}
 		this.parent.noTint();
 		while(diff > 0){
 			forward();
