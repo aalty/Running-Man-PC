@@ -150,12 +150,8 @@ public class Character {
 //		}
 		this.parent.noTint();
 		while(diff > 0){
-			if(MainApplet.tick>4){
-				forward();
-				diff--;
-				System.out.println(" diff " + diff);
-			}
-			
+			forward();
+			diff--;
 		}
 	}
 	
