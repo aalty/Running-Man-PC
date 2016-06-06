@@ -63,7 +63,7 @@ public class Character {
 			System.out.println("下："+ this.midX + " " + this.midY);
 		}
 		else if(this.midX >= parent.appletRightX && this.enterRightCircle < 2){
-			winFlag = 2;
+			//winFlag = 2;
 			if(enterRightCircle == 0){
 				this.rightRadius = (float) (this.midY - parent.appletRightCircleCenterY);
 				enterRightCircle ++;

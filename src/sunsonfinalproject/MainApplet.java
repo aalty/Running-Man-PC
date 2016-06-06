@@ -147,6 +147,7 @@ public class MainApplet extends PApplet {
 		}
 		
 		if(tick > 0){
+			//System.out.println(tick);
 			textSize(300);
 			fill(255);
 			if(tick == 1){

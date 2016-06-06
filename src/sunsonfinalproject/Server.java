@@ -157,7 +157,7 @@ public class Server {
 					
 
 					String line = this.reader.readLine();
-				//	System.out.println("server:"+this.playerIndex+" "+ line);
+					System.out.println("server:"+this.playerIndex+" "+ line);
 					
 					//Wait
 					if(this.currentGameState == gameState.WAITCONNECT){
@@ -219,6 +219,7 @@ public class Server {
 							//System.out.println(frontPlayerIndex);
 						}
 						else if(MainApplet.tick>4){
+							System.out.println(MainApplet.tick);
 							character.diff = Integer.parseInt(line)- this.lastShake;
 							this.lastShake = Integer.parseInt(line);
 							sendMessage("run");	
@@ -230,10 +231,11 @@ public class Server {
 							
 						}
 						else if(MainApplet.tick<=4){
+							System.out.println(MainApplet.tick);
 							this.useless_shake = Integer.parseInt(line);
 						}
 						//else
-							//System.out.println(" TICK "+ MainApplet.tick);
+							System.out.println(" TICK "+ MainApplet.tick);
 					}
 					//End
 					else if(this.currentGameState == gameState.END){
