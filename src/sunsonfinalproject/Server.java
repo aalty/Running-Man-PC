@@ -142,14 +142,19 @@ public class Server {
 		
 		public void run(){
 			while(true){
+				System.out.println("COUNTDOWN" + MainApplet.countdown);
+				if(!MainApplet.countdown){
 				try{
 //					if(begin == 1){
 //						sendMessage(rectColor);
 //						sendMessage(Integer.toString(this.playerIndex+1));
 //						begin = 0;
 //					}
+					
+					
 					String line = this.reader.readLine();
 					System.out.println("server:"+this.playerIndex+" "+ line);
+					
 					//Wait
 					if(this.currentGameState == gameState.WAITCONNECT){
 						if(line.equals("enter")){
@@ -216,11 +221,13 @@ public class Server {
 							System.out.println(frontPlayerIndex);
 						}
 						else{
+							
 							character.diff = Integer.parseInt(line) - lastShake;
 							lastShake = Integer.parseInt(line);
 							sendMessage("run");					
 							System.out.println(lastShake);
 							this.character.bomb = 0;
+							
 						}
 					}
 					else if(this.currentGameState == gameState.END){
@@ -230,10 +237,16 @@ public class Server {
 							this.currentGameState = gameState.CHOOSECHAR;
 						}
 					}
-				}
+					
+				
+					}
+			
 				catch(IOException e){
 					e.printStackTrace();
 				}
+				
+				}
+			
 			}
 		}
 		
