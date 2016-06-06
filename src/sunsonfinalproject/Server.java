@@ -220,12 +220,9 @@ public class Server {
 							//System.out.println(frontPlayerIndex);
 						}
 						else if(MainApplet.tick>4){
-							
-								
 							character.diff = Integer.parseInt(line)- this.lastShake;
 							this.lastShake = Integer.parseInt(line);
-							sendMessage("run");					
-							System.out.println("Lastshake "+ this.lastShake + "Useless shake"+ this.useless_shake);
+							sendMessage("run");	
 							this.character.bomb = 0;
 							if(this.iffirstin){
 								character.diff -=this.useless_shake;
@@ -235,7 +232,6 @@ public class Server {
 						}
 						else if(MainApplet.tick<=4){
 							this.useless_shake = Integer.parseInt(line);
-							System.out.println("UNeLESS!!!!! "+ this.useless_shake);
 						}
 						//else
 							//System.out.println(" TICK "+ MainApplet.tick);
