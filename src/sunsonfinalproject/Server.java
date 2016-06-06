@@ -144,19 +144,18 @@ public class Server {
 		
 		public void run(){
 			while(true){
-				System.out.println("COUNTDOWN" + MainApplet.countdown);
-				if(!MainApplet.countdown){
+				//System.out.println("COUNTDOWN" + MainApplet.countdown);
+				if(MainApplet.countdown==true){}
+				else{
 				try{
-<<<<<<< HEAD
+
 //					if(begin == 1){
 //						sendMessage(rectColor);
 //						sendMessage(Integer.toString(this.playerIndex+1));
 //						begin = 0;
 //					}
 					
-					
-=======
->>>>>>> origin/master
+
 					String line = this.reader.readLine();
 					System.out.println("server:"+this.playerIndex+" "+ line);
 					
