@@ -123,7 +123,7 @@ public class MainApplet extends PApplet {
 		field = loadImage("pic/bg.jpeg");
 		
 		image(field, 0, 0, width, height);
-		System.out.println("player num: "+player_num);
+		//System.out.println("player num: "+player_num);
 		//Character move
 		for(Character character : characters){
 			character.display();
@@ -145,9 +145,6 @@ public class MainApplet extends PApplet {
 		}
 		
 		if(tick > 0){
-			System.out.println("TICK "+ tick);
-			if(tick<5)
-				countdown=true;
 			textSize(300);
 			fill(255);
 			if(tick == 1){
@@ -166,9 +163,6 @@ public class MainApplet extends PApplet {
 				text("start!",250,400);
 				wait=1000;
 			}
-			else
-				countdown=false;
-			System.out.println("count in main applet"+ countdown);
 		}
 		
 		

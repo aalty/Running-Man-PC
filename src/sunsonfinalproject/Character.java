@@ -141,10 +141,10 @@ public class Character {
 		this.parent.image(this.img, midX - img.width/2, midY - img.height/2);
 		this.parent.noTint();
 		while(diff > 0){
-			System.out.println("tick in character : "+ MainApplet.tick);
 			if(MainApplet.tick>4){
 				forward();
 				diff--;
+				System.out.println(" diff " + diff);
 			}
 			
 		}

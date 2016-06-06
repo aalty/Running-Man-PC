@@ -27,7 +27,8 @@ public class Server {
 	private int mainAppletWidth = 1200, mainAppletHeight = 820;
 	private static int portNum;
 	private int player=0, selectCnt=0, playerNum;
-	private int again_count=0, send_cnt=0;;
+	private int again_count=0, send_cnt=0;
+
 	
 	public Server() {
 		final CountDownLatch latch = new CountDownLatch(1);
@@ -122,11 +123,12 @@ public class Server {
 		private Socket socket;
 		public Character character;
 		public ChooseCharacter rect;
-		private int lastShake=0, playerIndex;
+		private int lastShake=0, playerIndex,useless_shake=0;
 		private gameState currentGameState = gameState.WAITCONNECT;
 		public String rectColor;
 		private int bomb_num=0;
 		public int begin=0;
+		private boolean iffirstin=true;
 		
 		public ConnectionThread(Socket socket, int player){
 			this.socket = socket;
@@ -156,7 +158,7 @@ public class Server {
 					
 
 					String line = this.reader.readLine();
-					System.out.println("server:"+this.playerIndex+" "+ line);
+				//	System.out.println("server:"+this.playerIndex+" "+ line);
 					
 					//Wait
 					if(this.currentGameState == gameState.WAITCONNECT){
@@ -215,16 +217,28 @@ public class Server {
 								Server.this.connections.get(frontPlayerIndex).character.bomb = 1;
 								sendMessage("success");
 							}
-							System.out.println(frontPlayerIndex);
+							//System.out.println(frontPlayerIndex);
 						}
-						else if(MainApplet.countdown==false){
-							character.diff = Integer.parseInt(line) - lastShake;
-							lastShake = Integer.parseInt(line);
+						else if(MainApplet.tick>4){
+							
+								
+							character.diff = Integer.parseInt(line)- this.lastShake;
+							this.lastShake = Integer.parseInt(line);
 							sendMessage("run");					
-							System.out.println(lastShake);
+							System.out.println("Lastshake "+ this.lastShake + "Useless shake"+ this.useless_shake);
 							this.character.bomb = 0;
+							if(this.iffirstin){
+								character.diff -=this.useless_shake;
+								this.iffirstin=false;
+							}
 							
 						}
+						else if(MainApplet.tick<=4){
+							this.useless_shake = Integer.parseInt(line);
+							System.out.println("UNeLESS!!!!! "+ this.useless_shake);
+						}
+						//else
+							//System.out.println(" TICK "+ MainApplet.tick);
 					}
 					else if(this.currentGameState == gameState.END){
 						System.out.println("again: "+again_count+"set score: "+character.set_score);
@@ -247,7 +261,15 @@ public class Server {
 		}
 		
 		public int getLastShake(){
-			return this.lastShake;
+			
+			if(MainApplet.tick<5){
+				this.useless_shake = this.lastShake;
+				return 0;
+			}
+			else{
+				return this.lastShake-this.useless_shake;
+			}
+			
 		}
 		
 		public void sendMessage(String msg){
