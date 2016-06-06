@@ -168,6 +168,7 @@ public class MainApplet extends PApplet {
 			}
 			else
 				countdown=false;
+			System.out.println("count in main applet"+ countdown);
 		}
 		
 		

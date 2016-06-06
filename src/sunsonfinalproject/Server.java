@@ -144,9 +144,8 @@ public class Server {
 		
 		public void run(){
 			while(true){
-				//System.out.println("COUNTDOWN" + MainApplet.countdown);
-				if(MainApplet.countdown==true){}
-				else{
+				//System.out.println("COUNTDOWN int server " + MainApplet.countdown);
+				
 				try{
 
 //					if(begin == 1){
@@ -218,8 +217,7 @@ public class Server {
 							}
 							System.out.println(frontPlayerIndex);
 						}
-						else{
-							
+						else if(MainApplet.countdown==false){
 							character.diff = Integer.parseInt(line) - lastShake;
 							lastShake = Integer.parseInt(line);
 							sendMessage("run");					
@@ -243,7 +241,7 @@ public class Server {
 					e.printStackTrace();
 				}
 				
-				}
+				
 			
 			}
 		}
