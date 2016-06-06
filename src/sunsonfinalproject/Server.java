@@ -27,12 +27,9 @@ public class Server {
 	private int mainAppletWidth = 1200, mainAppletHeight = 820;
 	private static int portNum;
 	private int player=0, selectCnt=0, playerNum;
-<<<<<<< HEAD
 	private int again_count=0, restart=0;
-=======
-	private int again_count=0, send_cnt=0;
+	private int send_cnt=0;
 
->>>>>>> d7a49e99cc591ef13b95f4236670ebd5c7943b71
 	
 	public Server() {
 		final CountDownLatch latch = new CountDownLatch(1);
