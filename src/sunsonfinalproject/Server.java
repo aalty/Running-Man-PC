@@ -29,7 +29,7 @@ public class Server {
 	private int player=0, selectCnt=0, playerNum;
 	private int again_count=0, restart=0;
 	private int send_cnt=0;
-
+	
 	
 	public Server() {
 		final CountDownLatch latch = new CountDownLatch(1);
@@ -145,20 +145,10 @@ public class Server {
 		
 		public void run(){
 			while(true){
-				//System.out.println("COUNTDOWN int server " + MainApplet.countdown);
-				
 				try{
-
-//					if(begin == 1){
-//						sendMessage(rectColor);
-//						sendMessage(Integer.toString(this.playerIndex+1));
-//						begin = 0;
-//					}
-					
-
 					String line = this.reader.readLine();
 					System.out.println("server:"+this.playerIndex+" "+ line);
-					
+
 					//Wait
 					if(this.currentGameState == gameState.WAITCONNECT){
 						if(line.equals("enter")){
@@ -178,13 +168,14 @@ public class Server {
 							if(selectCnt == connections.size() && applet.currentGameState != gameState.PLAY){
 								applet.currentGameState = gameState.PLAY;
 								Server.this.broadcast("game");
+								System.out.println("send game");
 							}
 						}
 					}
 					//Play
 					else if(this.currentGameState == gameState.PLAY){
 
-						//System.out.println("player_num "+applet.player_num+" end_num "+applet.end_num);
+						System.out.println("player_num "+applet.player_num+" end_num "+applet.end_num);
 						//System.out.println("end "+applet.end_num+" players "+applet.player_num);
 
 						if(applet.end_num==applet.player_num){
@@ -216,8 +207,9 @@ public class Server {
 								Server.this.connections.get(frontPlayerIndex).character.bomb = 1;
 								sendMessage("success");
 							}
-							//System.out.println(frontPlayerIndex);
+							System.out.println(frontPlayerIndex);
 						}
+
 						else if(MainApplet.tick>4){
 							System.out.println(MainApplet.tick);
 							character.diff = Integer.parseInt(line)- this.lastShake;
@@ -225,17 +217,17 @@ public class Server {
 							sendMessage("run");	
 							this.character.bomb = 0;
 							if(this.iffirstin){
-								character.diff -=this.useless_shake;
+								character.diff-=this.useless_shake;
 								this.iffirstin=false;
 							}
 							
 						}
 						else if(MainApplet.tick<=4){
+							sendMessage("run");	
 							System.out.println(MainApplet.tick);
 							this.useless_shake = Integer.parseInt(line);
 						}
-						//else
-							System.out.println(" TICK "+ MainApplet.tick);
+
 					}
 					//End
 					else if(this.currentGameState == gameState.END){
@@ -247,6 +239,7 @@ public class Server {
 							restart++;
 							applet.end_num = 0;
 							System.out.println(playerIndex + "restart");
+							this.bomb_num = 0;
 							if(restart == connections.size()){
 								restart = 0;
 								broadcast("game");
@@ -256,29 +249,20 @@ public class Server {
 							}
 						}						
 					}
-					
-				
-					}
-			
+				}
 				catch(IOException e){
 					e.printStackTrace();
 				}
-				
-				
-			
 			}
 		}
 		
 		public int getLastShake(){
-			
 			if(MainApplet.tick<5){
 				this.useless_shake = this.lastShake;
 				return 0;
 			}
-			else{
-				return this.lastShake-this.useless_shake;
-			}
-			
+			else
+				return this.lastShake - this.useless_shake;
 		}
 		
 		public void sendMessage(String msg){

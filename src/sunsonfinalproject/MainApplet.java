@@ -19,15 +19,15 @@ public class MainApplet extends PApplet {
 
 	private String IP, port;
 	private int rectCnt=0;
-	public static boolean countdown=false;
-	public static gameState currentGameState;
+	public gameState currentGameState;
 	public WaitConnect waitConnectPage;
 	public int end_num=0;
 	public int player_num=0;
 	public int appletUpY, appletMidY, appletDownY, appletLeftCircleCenterY, appletRightCircleCenterY, 
 			   appletCircleR, appletLeftX, appletRightX, appletFirstPathStartY;
-	public static int  wait = 10000, tick = 0;
 	private int time = millis();
+	public static int wait = 10000, tick = 0;
+
 	
 	public MainApplet(String IP, String port){
 		this.IP= IP;
@@ -79,6 +79,7 @@ public class MainApplet extends PApplet {
 	}
 	
 	public void draw(){
+		
 		background(255);
 		//Wait page
 		if(currentGameState == gameState.WAITCONNECT){
@@ -123,7 +124,6 @@ public class MainApplet extends PApplet {
 	public void playPage(){
 		//Background
 		field = loadImage("pic/bg.jpeg");
-		
 		image(field, 0, 0, width, height);
 		//System.out.println("player num: "+player_num);
 		//Character move
@@ -142,12 +142,12 @@ public class MainApplet extends PApplet {
 		}
 		
 		if(millis() - time >= wait){
-				tick ++;
+			tick ++;
 			time = millis();
 		}
 		
 		if(tick > 0){
-			//System.out.println(tick);
+			System.out.println("TICK" + tick);
 			textSize(300);
 			fill(255);
 			if(tick == 1){
@@ -167,7 +167,6 @@ public class MainApplet extends PApplet {
 				wait=1000;
 			}
 		}
-		
 		
 		
 		
