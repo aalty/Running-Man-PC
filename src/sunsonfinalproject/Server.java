@@ -28,7 +28,6 @@ public class Server {
 	private static int portNum;
 	private int player=0, selectCnt=0, playerNum;
 	private int again_count=0, restart=0;
-	private int send_cnt=0;
 	
 	
 	public Server() {
