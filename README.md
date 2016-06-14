@@ -13,8 +13,8 @@
   
 # How to execute:
   
-  + Download PC server: https://github.com/AngusLinty/Running-Man-PC
-  + Download Android client: https://github.com/dorislee1112/Running-Man-Android
+  + Download Server.jar from: https://github.com/AngusLinty/Running-Man-PC
+  + Download toolMan.apk from: https://github.com/dorislee1112/Running-Man-Android
   + Install App on Android device
   + Run server by execute Server.jar
   
@@ -23,8 +23,8 @@
   
   National Tsing Hua University CS241001 Software Studio
   
-  102070028 周欣融
-  102010012 林庭宇
-  102070020 詹士樺
-  102070021 李昱慧
-  102012019 劉晉瑋
+  102070028 周欣融 
+  102010012 林庭宇 
+  102070020 詹士樺 
+  102070021 李昱慧 
+  102012019 劉晉瑋 
